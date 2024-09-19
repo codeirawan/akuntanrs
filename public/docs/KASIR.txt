@@ -1,0 +1,92 @@
+KASIR :
+
+1. Transaksi Tunai & Non Tunai :
+     ~ Transaksi Non Pasien
+     ~ Transaksi Patty Cash / Kas Kecil
+2. Transaksi Piutang
+
+ FARMASI  & LABORATORIUM :
+
+1. Pembelian Suppllier (Persediaan)
+2. Transaksi Unit (Pengambilan BHP)
+3. Perhitungan HPP
+
+
+GUDANG LOGISTIK :
+
+1. Pembelian Suppllier
+2. Transaksi Unit (Pemakaian Logistik Unit)
+
+
+GUDANG UMUM :
+
+1. Pembelian Suppllier
+
+BAGIAN KAS DAN BANK
+
+1. Pencatatan Transaksi Kas dan Bank
+
+JASA MEDIS
+
+1. Transaksi Pencatatan Jasa Medis
+
+
+BAG. AKUNTANSI
+
+1. Transaksi Ayat Jurnal Penyesuaian
+
+
+KAS DAN BANK
+
+Data Transaksi Berasal Dari :
+1. Kasir  : Pendapatan Tunai  & Non Tunai, Transaksi Petty Cash
+2. Bagian Kas dan Bank : Transaksi Penerimaan dan Pembayaran selain dari transaaksi dari kasir
+
+Laporan Kas dan Bak :
+1. Rekap Penerimaan Kas dan Bank
+2. Rekap Pengeluaran Kas dan Bank
+3. Laporan Mutasi Kas dan Bank
+
+HUTANG
+
+Data Transaksi Berasal dari :
+1. Farmasi  dan Laboratorium: Pembelian Supplier (Persediaan Farmasi) 
+2. Gudang Logistik : Pembelian Supplier (Persediaan ATK, Rumah Tangga, Cetakan, Paket Pasien)
+3. Gudang Umum : Pembelian Supplier (Persediaan Plt Non Medis, Pemeliharaan Non Medis, Pembelian Peralatan)
+4. Jasa Medis : Pencatatan Hutang Jasa Medis 
+
+Laporan Hutang :
+3. Laporan Mutasi Hutang
+
+
+PIUTANG
+
+Data Transaksi Berasal dari :
+1. Kasir : Transaksi Piutang
+
+Laporan Hutang :
+3. Laporan Mutasi Piutang
+
+JURNAL UMUM
+
+Data Transaksi Berasal Dari :
+1. Jurnal Transksi Penyesuaian 
+2. Farmasi : Pencatatan Perhitungan HPP
+3. Gudang Logistik : Pencatatn Pemakaian Logistik Unit
+
+LAPORAN KEUANGAN 
+
+1. Buku Besar
+2.  Laba / RUgi
+3.  Neraca
+4. Trial Balance
+5. Cash Flow
+
+ASET
+
+
+
+
+
+
+
