@@ -143,35 +143,31 @@
                                         <span class="kt-menu__link-text">{{ __('Master Data') }}</span>
                                     </span>
                                 </li>
-                                <li class="kt-menu__item @if (Request::is('master/company*')) kt-menu__item--here @endif"
+                                <li class="kt-menu__item @if (Request::is('master*')) kt-menu__item--here @endif"
                                     aria-haspopup="true">
-                                    <a href="{{ route('master.company.index') }}" class="kt-menu__link">
+                                    {{-- <a href="{{ route('master.company.index') }}" class="kt-menu__link">
                                         <i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i>
                                         <span class="kt-menu__link-text">{{ __('Company') }}</span>
-                                    </a>
-                                    <a href="{{ route('master.unit.index') }}" class="kt-menu__link">
-                                        <i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i>
-                                        <span class="kt-menu__link-text">{{ __('Units') }}</span>
                                     </a>
                                     <a href="{{ route('master.fiscal-year.index') }}" class="kt-menu__link">
                                         <i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i>
                                         <span class="kt-menu__link-text">{{ __('Fiscal Years') }}</span>
+                                    </a> --}}
+                                    <a href="{{ route('master.unit.index') }}" class="kt-menu__link">
+                                        <i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i>
+                                        <span class="kt-menu__link-text">{{ __('Units') }}</span>
                                     </a>
                                     <a href="{{ route('master.account.index') }}" class="kt-menu__link">
                                         <i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i>
                                         <span class="kt-menu__link-text">{{ __('Accounts') }}</span>
                                     </a>
-                                    <a href="{{ route('master.patient.index') }}" class="kt-menu__link">
+                                    <a href="{{ route('master.specialty.index') }}" class="kt-menu__link">
                                         <i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i>
-                                        <span class="kt-menu__link-text">{{ __('Patients') }}</span>
+                                        <span class="kt-menu__link-text">{{ __('Specialties') }}</span>
                                     </a>
                                     <a href="{{ route('master.doctor.index') }}" class="kt-menu__link">
                                         <i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i>
                                         <span class="kt-menu__link-text">{{ __('Doctors') }}</span>
-                                    </a>
-                                    <a href="{{ route('master.specialty.index') }}" class="kt-menu__link">
-                                        <i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i>
-                                        <span class="kt-menu__link-text">{{ __('Specialties') }}</span>
                                     </a>
                                     <a href="{{ route('master.service.index') }}" class="kt-menu__link">
                                         <i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i>
