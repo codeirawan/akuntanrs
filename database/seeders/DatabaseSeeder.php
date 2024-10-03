@@ -24,6 +24,11 @@ class DatabaseSeeder extends Seeder
             PatientsTableSeeder::class,
             SuppliersTableSeeder::class,
             UnitsTableSeeder::class,
+            ReceiptsTableSeeder::class,
+            ReceiptServicesTableSeeder::class,
+            ReceiptItemsTableSeeder::class,
+            PaymentsTableSeeder::class,
+            PaymentItemsTableSeeder::class,
         ]);
 
     }

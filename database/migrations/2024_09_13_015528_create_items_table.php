@@ -13,8 +13,8 @@ class CreateItemsTable extends Migration
             $table->string('code');
             $table->string('name');
             $table->string('unit');
-            $table->decimal('price', 15, 2);
-            $table->enum('category', ['pharmacy', 'logistic', 'general']);
+            $table->decimal('price', 17, 2);
+            $table->tinyInteger('category')->comment('1: pharmacy, 2: logistic, 3: general');
             $table->foreignId('updated_by')->nullable()->constrained('users');
             $table->foreignId('created_by')->constrained('users');
             $table->timestamps();

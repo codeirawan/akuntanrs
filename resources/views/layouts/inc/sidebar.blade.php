@@ -28,77 +28,25 @@
                         <h4 class="kt-menu__section-text">{{ __('Transaction Management') }}</h4>
                         <i class="kt-menu__section-icon flaticon-more-v2"></i>
                     </li>
-
-                    <li class="kt-menu__item @if (Request::is('transaction.cashier*')) kt-menu__item--here @endif"
+                    <li class="kt-menu__item @if (Request::is('patient*')) kt-menu__item--here @endif"
                         aria-haspopup="true">
-                        <a href="{{ route('transaction.cashier.index') }}" class="kt-menu__link">
-                            <i class="kt-menu__link-icon fa-solid fa-cash-register"></i>
-                            <span class="kt-menu__link-text">{{ __('Cashier') }}</span>
+                        <a href="{{ route('patient.index') }}" class="kt-menu__link">
+                            <i class="kt-menu__link-icon fa-solid fa-hospital-user"></i>
+                            <span class="kt-menu__link-text">{{ __('Patient') }}</span>
                         </a>
                     </li>
-                    <li class="kt-menu__item @if (Request::is('raw-data*')) kt-menu__item--here @endif"
+                    <li class="kt-menu__item @if (Request::is('receipt*')) kt-menu__item--here @endif"
                         aria-haspopup="true">
-                        <a href="{{ route('raw-data.index') }}" class="kt-menu__link">
-                            <i class="kt-menu__link-icon fa-solid fa-notes-medical"></i>
-                            <span class="kt-menu__link-text">{{ __('Medical Services') }}</span>
-                        </a>
-                    </li>
-                    <li class="kt-menu__item @if (Request::is('raw-data*')) kt-menu__item--here @endif"
-                        aria-haspopup="true">
-                        <a href="{{ route('raw-data.index') }}" class="kt-menu__link">
-                            <i class="kt-menu__link-icon fa-solid fa-money-bill-transfer"></i>
-                            <span class="kt-menu__link-text">{{ __('Cash Bank') }}</span>
-                        </a>
-                    </li>
-                    <li class="kt-menu__item @if (Request::is('raw-data*')) kt-menu__item--here @endif"
-                        aria-haspopup="true">
-                        <a href="{{ route('raw-data.index') }}" class="kt-menu__link">
+                        <a href="{{ route('receipt.index') }}" class="kt-menu__link">
                             <i class="kt-menu__link-icon fa-solid fa-receipt"></i>
-                            <span class="kt-menu__link-text">{{ __('Journal Entry') }}</span>
+                            <span class="kt-menu__link-text">{{ __('Receipt') }}</span>
                         </a>
                     </li>
-                @endpermission
-
-                @permission(['view-purchase'])
-                    <li class="kt-menu__section ">
-                        <h4 class="kt-menu__section-text">{{ __('Purchase Management') }}</h4>
-                        <i class="kt-menu__section-icon flaticon-more-v2"></i>
-                    </li>
-
-                    <li class="kt-menu__item @if (Request::is('schedule*')) kt-menu__item--here @endif"
+                    <li class="kt-menu__item @if (Request::is('payment*')) kt-menu__item--here @endif"
                         aria-haspopup="true">
-                        <a href="{{ route('schedule.index') }}" class="kt-menu__link">
-                            <i class="kt-menu__link-icon fa-solid fa-pills"></i>
-                            <span class="kt-menu__link-text">{{ __('Pharmacy Purchase') }}</span>
-                        </a>
-                    </li>
-                    <li class="kt-menu__item @if (Request::is('schedule*')) kt-menu__item--here @endif"
-                        aria-haspopup="true">
-                        <a href="{{ route('schedule.index') }}" class="kt-menu__link">
-                            <i class="kt-menu__link-icon fa-solid fa-box"></i>
-                            <span class="kt-menu__link-text">{{ __('Logistic Purchase') }}</span>
-                        </a>
-                    </li>
-                    <li class="kt-menu__item @if (Request::is('schedule*')) kt-menu__item--here @endif"
-                        aria-haspopup="true">
-                        <a href="{{ route('schedule.index') }}" class="kt-menu__link">
-                            <i class="kt-menu__link-icon fa-solid fa-warehouse"></i>
-                            <span class="kt-menu__link-text">{{ __('General Purchase') }}</span>
-                        </a>
-                    </li>
-                @endpermission
-
-                @permission(['view-asset'])
-                    <li class="kt-menu__section ">
-                        <h4 class="kt-menu__section-text">{{ __('Asset Management') }}</h4>
-                        <i class="kt-menu__section-icon flaticon-more-v2"></i>
-                    </li>
-
-                    <li class="kt-menu__item @if (Request::is('paid-leave*')) kt-menu__item--here @endif"
-                        aria-haspopup="true">
-                        <a href="{{ route('paid-leave.index') }}" class="kt-menu__link">
-                            <i class="kt-menu__link-icon fa-solid fa-house-medical-circle-check"></i>
-                            <span class="kt-menu__link-text">{{ __('Asset') }}</span>
+                        <a href="{{ route('payment.index') }}" class="kt-menu__link">
+                            <i class="kt-menu__link-icon fa-solid fa-file-invoice"></i>
+                            <span class="kt-menu__link-text">{{ __('Payment') }}</span>
                         </a>
                     </li>
                 @endpermission

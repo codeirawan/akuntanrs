@@ -59,7 +59,7 @@ class ItemController extends Controller
             'name' => ['required', 'string', 'max:191'],
             'unit' => ['required', 'string', 'max:191'],
             'price' => ['required', 'numeric'],
-            'category' => ['required', 'in:pharmacy,logistic,general'],
+            'category' => ['required', 'in:1,2,3'],
         ]);
 
         $item = new Item;
@@ -99,7 +99,7 @@ class ItemController extends Controller
             'name' => ['required', 'string', 'max:191'],
             'unit' => ['required', 'string', 'max:191'],
             'price' => ['required', 'numeric'],
-            'category' => ['required', 'in:pharmacy,logistic,general'],
+            'category' => ['required', 'in:1,2,3'],
         ]);
 
         $item->code = $request->code;

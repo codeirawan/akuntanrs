@@ -12,4 +12,13 @@ class Service extends Model
     use HasFactory, SoftDeletes;
 
     protected $table = 'services';
+    protected $fillable = [
+        'service_code',
+        'service_name',
+        'price',
+        'description',
+        'service_type',
+        'created_by',
+        'updated_by',
+    ];
 }

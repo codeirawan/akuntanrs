@@ -21,7 +21,13 @@
                         @if(Laratrust::isAbleTo('create-transaction'))
                             <a href="{{ route('transaction.cashier.create') }}" class="btn btn-brand btn-elevate btn-icon-sm">
                                 <i class="la la-plus"></i>
-                                {{ __('New Transaction') }}
+                                {{ __('Income Transaction') }}
+                            </a>
+                        @endif
+                        @if(Laratrust::isAbleTo('create-transaction'))
+                            <a href="{{ route('transaction.cashier.create') }}" class="btn btn-brand btn-elevate btn-icon-sm btn-danger">
+                                <i class="la la-minus"></i>
+                                {{ __('Expanse Transaction') }}
                             </a>
                         @endif
                     </div>

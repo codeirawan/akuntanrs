@@ -12,6 +12,7 @@ use App\Models\Master\Cashier;
 use App\Models\Master\Patient;
 use App\Models\Master\Service;
 use App\Http\Controllers\Controller;
+use App\Models\Master\Item;
 
 class CashierController extends Controller
 {
@@ -56,11 +57,12 @@ class CashierController extends Controller
         }
 
         $accounts = Account::all();
+        $items = Item::all();
         $units = Unit::all();
         $services = Service::all();
         $patients = Patient::all();
 
-        return view('transaction.cashier.create', compact('accounts', 'units', 'services', 'patients'));
+        return view('transaction.cashier.create', compact('accounts', 'items', 'units', 'services', 'patients'));
     }
 
 

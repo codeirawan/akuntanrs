@@ -10,14 +10,17 @@ class DoctorsTableSeeder extends Seeder
 {
     public function run()
     {
-        $faker = Faker::create();
+        $faker = Faker::create('id_ID'); // Set locale to Indonesian
 
         // Fetch all specialty IDs
         $specializations = DB::table('specialties')->pluck('id')->toArray();
 
+        // Titles (gelar) for Indonesian doctors
+        $titles = ['Dr.', 'drg.', 'Sp. OG', 'Sp. An', 'Sp. THT', 'Sp. KJ', 'Sp. PD', 'Sp. S'];
+
         foreach (range(1, 20) as $index) {
             DB::table('doctors')->insert([
-                'name' => $faker->name,
+                'name' => $faker->firstName . ' ' . $faker->lastName . ' ' . $faker->randomElement($titles), // Adding titles
                 'specialty_id' => $faker->randomElement($specializations),
                 'contact' => $faker->phoneNumber,
                 'address' => $faker->address,

@@ -60,6 +60,13 @@
             },
             columns: [
                 {
+                    title: "{{ __('Service Code') }}",
+                    data: 'service_code',
+                    name: 'service_code',
+                    defaultContent: '-',
+                    class: 'text-center',
+                },
+                {
                     title: "{{ __('Service Name') }}",
                     data: 'service_name',
                     name: 'service_name',
@@ -72,6 +79,30 @@
                     name: 'price',
                     defaultContent: '-',
                     class: 'text-center',
+                },
+                {
+                    title: "{{ __('Description') }}",
+                    data: 'description',
+                    name: 'description',
+                    defaultContent: '-',
+                    class: 'text-center',
+                },
+                {
+                    title: "{{ __('Service Type') }}",
+                    data: 'service_type',
+                    name: 'service_type',
+                    defaultContent: '-',
+                    class: 'text-center',
+                    render: function(data) {
+                        switch(data) {
+                            case 1: return 'Consultation';
+                            case 2: return 'Surgery';
+                            case 3: return 'Diagnostic';
+                            case 4: return 'Inpatient';
+                            case 5: return 'Outpatient';
+                            default: return '-';
+                        }
+                    }
                 },
                 {
                     title: "{{ __('Action') }}",

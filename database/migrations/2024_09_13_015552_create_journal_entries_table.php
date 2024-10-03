@@ -14,8 +14,8 @@ class CreateJournalEntriesTable extends Migration
             $table->foreignId('account_id')->constrained('accounts');
             $table->foreignId('unit_id')->constrained('units');
             $table->date('date');
-            $table->decimal('debit', 15, 2);
-            $table->decimal('credit', 15, 2);
+            $table->decimal('debit', 17, 2);
+            $table->decimal('credit', 17, 2);
             $table->text('description');
             $table->foreignId('updated_by')->nullable()->constrained('users');
             $table->foreignId('created_by')->constrained('users');

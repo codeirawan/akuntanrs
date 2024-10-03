@@ -13,9 +13,13 @@ class CreatePatientsTable extends Migration
             $table->string('name');
             $table->string('nik');
             $table->date('dob');
-            $table->enum('gender', ['p', 'l']);
-            $table->text('address');
-            $table->text('description')->nullable();
+            $table->tinyInteger('gender')->comment('0: Female, 1: Male');
+            $table->string('phone')->nullable();
+            $table->string('email')->nullable();
+            $table->string('insurance_name')->nullable();
+            $table->string('insurance_no')->nullable();
+            $table->text('address')->nullable();
+            $table->text('note')->nullable();
             $table->foreignId('updated_by')->nullable()->constrained('users');
             $table->foreignId('created_by')->constrained('users');
             $table->timestamps();

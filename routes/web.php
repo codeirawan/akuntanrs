@@ -71,6 +71,21 @@ Route::middleware(['auth', 'verified'])->group(
             });
         });
 
+        Route::namespace('Transaction')->group(function () {
+            Route::middleware('permission:view-transaction')->group(function () {
+                Route::resource('patient', 'PatientController');
+                Route::post('/patient/data', 'PatientController@data')->name('patient.data');
+                Route::resource('receipt', 'ReceiptController');
+                Route::post('/receipt/data', 'ReceiptController@data')->name('receipt.data');
+                Route::get('/receipt/create/medical', 'ReceiptController@create')->name('receipt.create.medical');
+                Route::get('/receipt/create/medicine', 'ReceiptController@create')->name('receipt.create.medicine');
+                Route::resource('payment', 'PaymentController');
+                Route::post('/payment/data', 'PaymentController@data')->name('payment.data');
+                Route::get('/payment/create/item', 'PaymentController@create')->name('payment.create.item');
+                Route::get('/payment/create/doctor', 'PaymentController@create')->name('payment.create.doctor');
+            });
+        });
+
         Route::prefix('/transaction')->as('transaction.')->namespace('Transaction')->group(function () {
             Route::middleware('permission:view-transaction')->group(function () {
                 Route::resource('cashier', 'CashierController');

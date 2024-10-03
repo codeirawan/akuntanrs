@@ -90,10 +90,14 @@
 
                         <div class="form-group">
                             <label for="category">{{ __('Category') }}</label>
-                            <select id="category" name="category" class="form-control @error('category') is-invalid @enderror" required>
-                                <option value="pharmacy" {{ old('category') == 'pharmacy' ? 'selected' : '' }}>{{ __('Pharmacy') }}</option>
-                                <option value="logistic" {{ old('category') == 'logistic' ? 'selected' : '' }}>{{ __('Logistic') }}</option>
-                                <option value="general" {{ old('category') == 'general' ? 'selected' : '' }}>{{ __('General') }}</option>
+                            <select id="category" name="category"
+                                class="form-control @error('category') is-invalid @enderror" required>
+                                <option value="1" {{ old('category') == 1 ? 'selected' : '' }}>{{ __('Pharmacy') }}
+                                </option>
+                                <option value="2" {{ old('category') == 2 ? 'selected' : '' }}>{{ __('Logistic') }}
+                                </option>
+                                <option value="3" {{ old('category') == 3 ? 'selected' : '' }}>{{ __('General') }}
+                                </option>
                             </select>
 
                             @error('category')

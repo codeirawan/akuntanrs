@@ -14,9 +14,9 @@ class CreatePurchaseItemsTable extends Migration
             $table->foreignId('unit_id')->constrained('units');
             $table->foreignId('item_id')->constrained('items');
             $table->string('unit');
-            $table->decimal('price', 15, 2);
-            $table->decimal('quantity', 15, 2);
-            $table->decimal('amount', 15, 2);
+            $table->decimal('price', 17, 2);
+            $table->decimal('quantity', 17, 2);
+            $table->decimal('amount', 17, 2);
             $table->foreignId('updated_by')->nullable()->constrained('users');
             $table->foreignId('created_by')->constrained('users');
             $table->timestamps();

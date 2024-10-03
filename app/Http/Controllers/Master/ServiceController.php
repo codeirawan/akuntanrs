@@ -26,7 +26,7 @@ class ServiceController extends Controller
             return abort(404);
         }
 
-        $services = Service::select('id', 'service_name', 'price');
+        $services = Service::select('id', 'service_code', 'service_name', 'price', 'description', 'service_type');
 
         return DataTables::of($services)
             ->addColumn('action', function ($service) {
@@ -54,19 +54,24 @@ class ServiceController extends Controller
             return abort(404);
         }
 
-        $this->validate($request, [
-            'service_name' => ['required', 'string', 'max:191'],
-            'price' => ['required', 'numeric', 'min:0'],
+        $request->validate([
+            'service_code' => 'required|string|max:50|unique:services',
+            'service_name' => 'required|string|max:191',
+            'price' => 'required|numeric|min:0',
+            'description' => 'nullable|string',
+            'service_type' => 'required|integer|in:1,2,3,4,5',
         ]);
 
-        $service = new Service;
-        $service->service_name = $request->service_name;
-        $service->price = $request->price;
-        $service->created_by = auth()->user()->id;
-        $service->save();
+        Service::create([
+            'service_code' => $request->service_code,
+            'service_name' => $request->service_name,
+            'price' => $request->price,
+            'description' => $request->description,
+            'service_type' => $request->service_type,
+            'created_by' => auth()->user()->id,
+        ]);
 
-        $message = Lang::get('Service') . ' \'' . $service->service_name . '\' ' . Lang::get('successfully created.');
-        return redirect()->route('master.service.index')->with('status', $message);
+        return redirect()->route('master.service.index')->with('status', Lang::get('Service') . ' \'' . $request->service_name . '\' ' . Lang::get('successfully created.'));
     }
 
     public function edit($id)
@@ -88,18 +93,24 @@ class ServiceController extends Controller
 
         $service = Service::findOrFail($id);
 
-        $this->validate($request, [
-            'service_name' => ['required', 'string', 'max:191'],
-            'price' => ['required', 'numeric', 'min:0'],
+        $request->validate([
+            'service_code' => 'required|string|max:50|unique:services,service_code,' . $service->id,
+            'service_name' => 'required|string|max:191',
+            'price' => 'required|numeric|min:0',
+            'description' => 'nullable|string',
+            'service_type' => 'required|integer|in:1,2,3,4,5',
         ]);
 
-        $service->service_name = $request->service_name;
-        $service->price = $request->price;
-        $service->updated_by = auth()->user()->id;
-        $service->save();
+        $service->update([
+            'service_code' => $request->service_code,
+            'service_name' => $request->service_name,
+            'price' => $request->price,
+            'description' => $request->description,
+            'service_type' => $request->service_type,
+            'updated_by' => auth()->user()->id,
+        ]);
 
-        $message = Lang::get('Service') . ' \'' . $service->service_name . '\' ' . Lang::get('successfully updated.');
-        return redirect()->route('master.service.index')->with('status', $message);
+        return redirect()->route('master.service.index')->with('status', Lang::get('Service') . ' \'' . $service->service_name . '\' ' . Lang::get('successfully updated.'));
     }
 
     public function destroy($id)
@@ -109,10 +120,8 @@ class ServiceController extends Controller
         }
 
         $service = Service::findOrFail($id);
-        $name = $service->service_name;
         $service->delete();
 
-        $message = Lang::get('Service') . ' \'' . $name . '\' ' . Lang::get('successfully deleted.');
-        return redirect()->route('master.service.index')->with('status', $message);
+        return redirect()->route('master.service.index')->with('status', Lang::get('Service') . ' \'' . $service->service_name . '\' ' . Lang::get('successfully deleted.'));
     }
 }

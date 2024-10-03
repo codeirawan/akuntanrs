@@ -17,7 +17,7 @@ class CreateMedicalServicesTable extends Migration
             $table->foreignId('doctor_id')->constrained('doctors');
             $table->foreignId('service_id')->constrained('services');
             $table->date('date');
-            $table->decimal('amount', 15, 2);
+            $table->decimal('amount', 17, 2);
             $table->text('description')->nullable();
             $table->foreignId('updated_by')->nullable()->constrained('users');
             $table->foreignId('created_by')->constrained('users');

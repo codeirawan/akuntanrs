@@ -11,7 +11,7 @@ class CreatePharmacyCogsTable extends Migration
         Schema::create('pharmacy_cogs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('pharmacy_item_id')->constrained('items');
-            $table->decimal('cost', 15, 2);
+            $table->decimal('cost', 17, 2);
             $table->foreignId('updated_by')->nullable()->constrained('users');
             $table->foreignId('created_by')->constrained('users');
             $table->timestamps();

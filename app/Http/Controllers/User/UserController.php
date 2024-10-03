@@ -4,9 +4,6 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Imports\BulkUserImport;
-use App\Models\Master\City;
-use App\Models\Master\Project;
-use App\Models\Master\Skill;
 use App\Role;
 use App\User;
 use DataTables;

@@ -11,7 +11,7 @@ class CreateFixedAssetsTable extends Migration
         Schema::create('fixed_assets', function (Blueprint $table) {
             $table->id();
             $table->string('asset_name');
-            $table->decimal('value', 15, 2);
+            $table->decimal('value', 17, 2);
             $table->date('purchase_date');
             $table->timestamps();
 $table->softDeletes();

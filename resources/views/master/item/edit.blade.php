@@ -14,8 +14,7 @@
 
         <div class="form-group">
             <label for="code">{{ __('Code') }}</label>
-            <input id="code" name="code" type="text" 
-                class="form-control @error('code') is-invalid @enderror"
+            <input id="code" name="code" type="text" class="form-control @error('code') is-invalid @enderror"
                 value="{{ old('code', $item->code) }}" required>
 
             @error('code')
@@ -27,8 +26,7 @@
 
         <div class="form-group">
             <label for="name">{{ __('Name') }}</label>
-            <input id="name" name="name" type="text" 
-                class="form-control @error('name') is-invalid @enderror"
+            <input id="name" name="name" type="text" class="form-control @error('name') is-invalid @enderror"
                 value="{{ old('name', $item->name) }}" required>
 
             @error('name')
@@ -40,8 +38,7 @@
 
         <div class="form-group">
             <label for="unit">{{ __('Unit') }}</label>
-            <input id="unit" name="unit" type="text" 
-                class="form-control @error('unit') is-invalid @enderror"
+            <input id="unit" name="unit" type="text" class="form-control @error('unit') is-invalid @enderror"
                 value="{{ old('unit', $item->unit) }}" required>
 
             @error('unit')
@@ -53,9 +50,9 @@
 
         <div class="form-group">
             <label for="price">{{ __('Price') }}</label>
-            <input id="price" name="price" type="number" step="0.01" 
-                class="form-control @error('price') is-invalid @enderror"
-                value="{{ old('price', $item->price) }}" required>
+            <input id="price" name="price" type="number" step="0.01"
+                class="form-control @error('price') is-invalid @enderror" value="{{ old('price', $item->price) }}"
+                required>
 
             @error('price')
                 <span class="invalid-feedback" role="alert">
@@ -67,11 +64,11 @@
         <div class="form-group">
             <label for="category">{{ __('Category') }}</label>
             <select id="category" name="category" class="form-control @error('category') is-invalid @enderror">
-                <option value="pharmacy" {{ old('category', $item->category) == 'pharmacy' ? 'selected' : '' }}>
+                <option value="1" {{ old('category', $item->category) == 1 ? 'selected' : '' }}>
                     {{ __('Pharmacy') }}</option>
-                <option value="logistic" {{ old('category', $item->category) == 'logistic' ? 'selected' : '' }}>
+                <option value="2" {{ old('category', $item->category) == 2 ? 'selected' : '' }}>
                     {{ __('Logistic') }}</option>
-                <option value="general" {{ old('category', $item->category) == 'general' ? 'selected' : '' }}>
+                <option value="3" {{ old('category', $item->category) == 3 ? 'selected' : '' }}>
                     {{ __('General') }}</option>
             </select>
 
