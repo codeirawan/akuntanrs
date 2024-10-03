@@ -2,9 +2,12 @@
 
 namespace App\Models\Transaction;
 
+use App\Models\Master\Account;
+use App\Models\Transaction\ReceiptItem;
+use App\Models\Transaction\ReceiptService;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Receipt extends Model
 {
@@ -33,5 +36,9 @@ class Receipt extends Model
     public function services()
     {
         return $this->hasMany(ReceiptService::class, 'receipt_id');
+    }
+
+    public function account() {
+        return $this->belongsTo(Account::class);
     }
 }

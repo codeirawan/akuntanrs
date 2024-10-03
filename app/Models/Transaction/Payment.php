@@ -2,9 +2,11 @@
 
 namespace App\Models\Transaction;
 
+use App\Models\Master\Account;
+use App\Models\Transaction\PaymentItem;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Payment extends Model
 {
@@ -30,6 +32,11 @@ class Payment extends Model
     public function items()
     {
         return $this->hasMany(PaymentItem::class, 'payment_id');
+    }
+
+    public function account()
+    {
+        return $this->belongsTo(Account::class);
     }
 
 }

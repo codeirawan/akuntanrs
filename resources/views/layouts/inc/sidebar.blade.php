@@ -52,42 +52,46 @@
                 @endpermission
 
                 @permission(['view-report'])
-                    <li class="kt-menu__section ">
+                    <li class="kt-menu__section">
                         <h4 class="kt-menu__section-text">{{ __('Report Management') }}</h4>
                         <i class="kt-menu__section-icon flaticon-more-v2"></i>
                     </li>
 
-                    <li class="kt-menu__item @if (Request::is('paid-leave*')) kt-menu__item--here @endif"
+                    <li class="kt-menu__item @if (Request::is('general-ledger*')) kt-menu__item--here @endif"
                         aria-haspopup="true">
-                        <a href="{{ route('paid-leave.index') }}" class="kt-menu__link">
+                        <a href="{{ route('general-ledger.index') }}" class="kt-menu__link">
                             <i class="kt-menu__link-icon fa-solid fa-book"></i>
                             <span class="kt-menu__link-text">{{ __('General Ledger') }}</span>
                         </a>
                     </li>
-                    <li class="kt-menu__item @if (Request::is('paid-leave*')) kt-menu__item--here @endif"
+
+                    <li class="kt-menu__item @if (Request::is('income-statement*')) kt-menu__item--here @endif"
                         aria-haspopup="true">
-                        <a href="{{ route('paid-leave.index') }}" class="kt-menu__link">
+                        <a href="{{ route('income-statement.index') }}" class="kt-menu__link">
                             <i class="kt-menu__link-icon fa-solid fa-sack-dollar"></i>
                             <span class="kt-menu__link-text">{{ __('Income Statement') }}</span>
                         </a>
                     </li>
-                    <li class="kt-menu__item @if (Request::is('paid-leave*')) kt-menu__item--here @endif"
+
+                    <li class="kt-menu__item @if (Request::is('balance-sheet*')) kt-menu__item--here @endif"
                         aria-haspopup="true">
-                        <a href="{{ route('paid-leave.index') }}" class="kt-menu__link">
+                        <a href="{{ route('balance-sheet.index') }}" class="kt-menu__link">
                             <i class="kt-menu__link-icon fa-solid fa-scale-balanced"></i>
                             <span class="kt-menu__link-text">{{ __('Balance Sheet') }}</span>
                         </a>
                     </li>
-                    <li class="kt-menu__item @if (Request::is('paid-leave*')) kt-menu__item--here @endif"
+
+                    <li class="kt-menu__item @if (Request::is('trial-balance*')) kt-menu__item--here @endif"
                         aria-haspopup="true">
-                        <a href="{{ route('paid-leave.index') }}" class="kt-menu__link">
+                        <a href="{{ route('trial-balance.index') }}" class="kt-menu__link">
                             <i class="kt-menu__link-icon fa-solid fa-scale-unbalanced"></i>
                             <span class="kt-menu__link-text">{{ __('Trial Balance') }}</span>
                         </a>
                     </li>
-                    <li class="kt-menu__item @if (Request::is('paid-leave*')) kt-menu__item--here @endif"
+
+                    <li class="kt-menu__item @if (Request::is('cash-flow*')) kt-menu__item--here @endif"
                         aria-haspopup="true">
-                        <a href="{{ route('paid-leave.index') }}" class="kt-menu__link">
+                        <a href="{{ route('cash-flow.index') }}" class="kt-menu__link">
                             <i class="kt-menu__link-icon fa-solid fa-money-bill-trend-up"></i>
                             <span class="kt-menu__link-text">{{ __('Cash Flow') }}</span>
                         </a>
