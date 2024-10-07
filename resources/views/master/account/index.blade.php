@@ -58,7 +58,13 @@
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 }
             },
-            columns: [
+            columns: [{
+                    title: "{{ __('Account Code') }}",
+                    data: 'account_code',
+                    name: 'account_code',
+                    defaultContent: '-',
+                    class: 'text-center',
+                },
                 {
                     title: "{{ __('Account Name') }}",
                     data: 'account_name',
@@ -67,9 +73,9 @@
                     class: 'text-center',
                 },
                 {
-                    title: "{{ __('Account Code') }}",
-                    data: 'account_code',
-                    name: 'account_code',
+                    title: "{{ __('Sub Account Name') }}",
+                    data: 'sub_account_name',
+                    name: 'sub_account_name',
                     defaultContent: '-',
                     class: 'text-center',
                 },
@@ -81,10 +87,28 @@
                     class: 'text-center',
                 },
                 {
-                    title: "{{ __('DC Type') }}",
-                    data: 'dc_type',
-                    name: 'dc_type',
-                    defaultContent: '-',
+                    title: "{{ __('Debit/Credit Type') }}",
+                    data: function(row) {
+                        return row.is_debit ? "{{ __('Debit') }}" : "{{ __('Credit') }}";
+                    },
+                    class: 'text-center',
+                },
+                {
+                    title: "{{ __('Balance Sheet Flag') }}",
+                    data: function(row) {
+                        return row.bs_flag ?
+                            '<i class="la la-check text-success font-weight-bold"></i>' :
+                            '<i class="la la-times text-danger font-weight-bold"></i>';
+                    },
+                    class: 'text-center',
+                },
+                {
+                    title: "{{ __('Profit/Loss Flag') }}",
+                    data: function(row) {
+                        return row.pl_flag ?
+                            '<i class="la la-check text-success font-weight-bold"></i>' :
+                            '<i class="la la-times text-danger font-weight-bold"></i>';
+                    },
                     class: 'text-center',
                 },
                 {
@@ -99,6 +123,15 @@
                     data: 'opening_balance_date',
                     name: 'opening_balance_date',
                     defaultContent: '-',
+                    class: 'text-center',
+                },
+                {
+                    title: "{{ __('Is Active') }}",
+                    data: function(row) {
+                        return row.is_active ?
+                            '<i class="la la-check text-success font-weight-bold"></i>' :
+                            '<i class="la la-times text-danger font-weight-bold"></i>';
+                    },
                     class: 'text-center',
                 },
                 {

@@ -14,6 +14,24 @@ class Account extends Model
 
     protected $table = 'accounts';
 
+    // Specify which attributes can be mass assigned
+    protected $fillable = [
+        'account_name',
+        'account_code',
+        'sub_account_name',
+        'account_type',
+        'opening_balance',
+        'opening_balance_date',
+        'is_credit',
+        'is_debit',
+        'bs_flag',
+        'pl_flag',
+        'pl_flag',
+        'is_active',
+        'updated_by',
+        'created_by',
+    ];
+
     // Relasi ke tabel receipt (penerimaan)
     public function receipts()
     {

@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Master;
 
-use App\Http\Controllers\Controller;
-use App\Models\Master\Account;
-use DataTables;
-use Illuminate\Http\Request;
-use Lang;
 use Laratrust;
+use DataTables;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use App\Models\Master\Account;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Lang;
 
 class AccountController extends Controller
 {
@@ -26,17 +27,29 @@ class AccountController extends Controller
             return abort(404);
         }
 
-        $accounts = Account::select('id', 'account_name', 'account_code', 'account_type', 'dc_type', 'opening_balance', 'is_active');
+        $accounts = Account::select('id', 'account_name', 'sub_account_name', 'account_code', 'account_type', 'is_debit', 'is_credit', 'bs_flag', 'pl_flag', 'opening_balance', 'opening_balance_date', 'is_active')
+            ->orderBy('account_code')->get();
 
         return DataTables::of($accounts)
             ->addColumn('account_type', function ($account) {
-                return ucfirst($account->account_type);
+                $accountTypes = [
+                    1 => 'Liquid Asset',
+                    2 => 'Fixed Asset',
+                    3 => 'Liability',
+                    4 => 'Equity',
+                    5 => 'Income',
+                    6 => 'Expense',
+                    7 => 'Other',
+                ];
+                return ucfirst($accountTypes[$account->account_type] ?? 'Other');
             })
-            ->addColumn('dc_type', function ($account) {
-                return $account->dc_type == 'd' ? 'Debit' : 'Credit';
+            ->addColumn('opening_balance', function ($account) {
+                // Format opening balance as 1.000.899,98
+                return number_format($account->opening_balance, 2, ',', '.');
             })
-            ->addColumn('is_active', function ($account) {
-                return $account->is_active ? Lang::get('Active') : Lang::get('Inactive');
+            ->addColumn('opening_balance_date', function ($account) {
+                // Format the date as dd/mm/yyyy
+                return $account->opening_balance_date ? \Carbon\Carbon::parse($account->opening_balance_date)->format('d/m/Y') : '-';
             })
             ->addColumn('action', function ($account) {
                 $edit = '<a href="' . route('master.account.edit', $account->id) . '" class="btn btn-sm btn-clean btn-icon btn-icon-md btn-tooltip" title="' . Lang::get('Edit') . '"><i class="la la-edit"></i></a>';
@@ -63,28 +76,68 @@ class AccountController extends Controller
             return abort(404);
         }
 
-        $this->validate($request, [
+        // Validate request data
+        $validatedData = $this->validate($request, [
             'account_name' => ['required', 'string', 'max:191'],
+            'sub_account_name' => ['required', 'string', 'max:191'],
             'account_code' => ['required', 'string', 'max:191', 'unique:accounts,account_code'],
-            'account_type' => ['required', 'in:asset,liability,equity,income,expense'],
-            'dc_type' => ['required', 'in:d,c'],
-            'opening_balance' => ['required', 'numeric', 'min:0'],
-            'opening_balance_date' => ['required', 'date'],
+            'account_type' => ['required', 'integer', 'between:1,7'],
+            'is_debit' => ['nullable', 'boolean'],
+            'is_credit' => ['nullable', 'boolean'],
+            'bs_flag' => ['nullable', 'boolean'],
+            'pl_flag' => ['nullable', 'boolean'],
+            'opening_balance' => ['nullable', 'numeric', 'min:0'],
+            'opening_balance_date' => ['nullable', 'date_format:d-m-Y'],
         ]);
 
-        $account = new Account;
-        $account->account_name = $request->account_name;
-        $account->account_code = $request->account_code;
-        $account->account_type = $request->account_type;
-        $account->dc_type = $request->dc_type;
-        $account->opening_balance = $request->opening_balance;
-        $account->opening_balance_date = $request->opening_balance_date;
-        $account->is_active = 1;
-        $account->created_by = auth()->user()->id;
-        $account->save();
+        // Set flags to their default values
+        $isDebit = $request->has('is_debit') ? 1 : 0;
+        $isCredit = $request->has('is_credit') ? 1 : 0;
+        $bsFlag = $request->has('bs_flag') ? 1 : 0;
+        $plFlag = $request->has('pl_flag') ? 1 : 0;
 
-        $message = Lang::get('Account') . ' \'' . $account->account_name . '\' ' . Lang::get('successfully created.');
-        return redirect()->route('master.account.index')->with('status', $message);
+        // Validate debit/credit and bs/pl flags logic
+        if ($request->is_debit && $request->is_credit) {
+            return redirect()->back()->withInput()->withErrors(['is_debit' => 'Only one of Is Debit or Is Credit can be selected.']);
+        }
+        if (!$request->is_debit && !$request->is_credit) {
+            return redirect()->back()->withInput()->withErrors(['is_debit' => 'At least one of Is Debit or Is Credit must be selected.']);
+        }
+        if ($request->bs_flag && $request->pl_flag) {
+            return redirect()->back()->withInput()->withErrors(['bs_flag' => 'Only one of Balance Sheet Flag or Profit/Loss Flag can be selected.']);
+        }
+        if (!$request->bs_flag && !$request->pl_flag) {
+            return redirect()->back()->withInput()->withErrors(['bs_flag' => 'At least one of Balance Sheet Flag or Profit/Loss Flag must be selected.']);
+        }
+
+        try {
+            // Create a new account
+            $account = Account::create([
+                'account_name' => $validatedData['account_name'],
+                'sub_account_name' => $validatedData['sub_account_name'],
+                'account_code' => $validatedData['account_code'],
+                'account_type' => $validatedData['account_type'],
+                'is_debit' => $isDebit,
+                'is_credit' => $isCredit,
+                'bs_flag' => $bsFlag,
+                'pl_flag' => $plFlag,
+                'opening_balance' => $validatedData['opening_balance'] ?? 0,
+                'opening_balance_date' => $validatedData['opening_balance_date'] ? Carbon::createFromFormat('d-m-Y', $validatedData['opening_balance_date'])->format('Y-m-d') : null,
+                'is_active' => 1,
+                'created_by' => auth()->user()->id,
+                'updated_by' => auth()->user()->id,
+            ]);
+
+            $message = Lang::get('Account') . ' \'' . $account->account_name . '\' ' . Lang::get('successfully created.');
+            return redirect()->route('master.account.index')->with('status', $message);
+        } catch (\Exception $e) {
+            \Log::error('Error creating account: ' . $e->getMessage(), [
+                'request' => $request->all(),
+                'user_id' => auth()->user()->id,
+            ]);
+
+            return redirect()->back()->withInput()->withErrors(['error' => Lang::get('Failed to create account. Please try again.')]);
+        }
     }
 
     public function edit($id)
@@ -104,30 +157,76 @@ class AccountController extends Controller
             return abort(404);
         }
 
-        $account = Account::findOrFail($id);
-
-        $this->validate($request, [
+        // Validate request data
+        $validatedData = $this->validate($request, [
             'account_name' => ['required', 'string', 'max:191'],
-            'account_code' => ['required', 'string', 'max:191', 'unique:accounts,account_code,' . $account->id],
-            'account_type' => ['required', 'in:asset,liability,equity,income,expense'],
-            'dc_type' => ['required', 'in:d,c'],
-            'opening_balance' => ['required', 'numeric', 'min:0'],
-            'opening_balance_date' => ['required', 'date'],
-            // 'is_active' => ['required', 'boolean'],
+            'sub_account_name' => ['required', 'string', 'max:191'],
+            'account_code' => ['required', 'string', 'max:191', 'unique:accounts,account_code,' . $id],
+            'account_type' => ['required', 'integer', 'between:1,7'],
+            'is_debit' => ['nullable', 'boolean'],
+            'is_credit' => ['nullable', 'boolean'],
+            'bs_flag' => ['nullable', 'boolean'],
+            'pl_flag' => ['nullable', 'boolean'],
+            'opening_balance' => ['nullable', 'numeric', 'min:0'],
+            'opening_balance_date' => ['nullable', 'date_format:d-m-Y'],
+            'is_active' => ['nullable', 'boolean'],
         ]);
 
-        $account->account_name = $request->account_name;
-        $account->account_code = $request->account_code;
-        $account->account_type = $request->account_type;
-        $account->dc_type = $request->dc_type;
-        $account->opening_balance = $request->opening_balance;
-        $account->opening_balance_date = $request->opening_balance_date;
-        $account->is_active = $request->is_active ? 1 : 0;
-        $account->updated_by = auth()->user()->id;
-        $account->save();
+        // Set flags to their default values
+        $isDebit = $request->has('is_debit') ? 1 : 0;
+        $isCredit = $request->has('is_credit') ? 1 : 0;
+        $bsFlag = $request->has('bs_flag') ? 1 : 0;
+        $plFlag = $request->has('pl_flag') ? 1 : 0;
+        $isActive = $request->has('is_active') ? 1 : 0;
 
-        $message = Lang::get('Account') . ' \'' . $account->account_name . '\' ' . Lang::get('successfully updated.');
-        return redirect()->route('master.account.index')->with('status', $message);
+        // Validate that either is_debit or is_credit is true but not both
+        if ($request->is_debit && $request->is_credit) {
+            return redirect()->back()->withInput()->withErrors(['is_debit' => 'Only one of Is Debit or Is Credit can be selected.']);
+        }
+        if (!$request->is_debit && !$request->is_credit) {
+            return redirect()->back()->withInput()->withErrors(['is_debit' => 'At least one of Is Debit or Is Credit must be selected.']);
+        }
+
+        // Validate that either bs_flag or pl_flag is true but not both
+        if ($request->bs_flag && $request->pl_flag) {
+            return redirect()->back()->withInput()->withErrors(['bs_flag' => 'Only one of Balance Sheet Flag or Profit/Loss Flag can be selected.']);
+        }
+        if (!$request->bs_flag && !$request->pl_flag) {
+            return redirect()->back()->withInput()->withErrors(['bs_flag' => 'At least one of Balance Sheet Flag or Profit/Loss Flag must be selected.']);
+        }
+
+        try {
+            // Retrieve the account to update or fail if not found
+            $account = Account::findOrFail($id);
+
+            // Update account fields with validated data
+            $account->update([
+                'account_name' => $validatedData['account_name'],
+                'sub_account_name' => $validatedData['sub_account_name'],
+                'account_code' => $validatedData['account_code'],
+                'account_type' => $validatedData['account_type'],
+                'is_debit' => $isDebit,
+                'is_credit' => $isCredit,
+                'bs_flag' => $bsFlag,
+                'pl_flag' => $plFlag,
+                'opening_balance' => $validatedData['opening_balance'] ?? 0,
+                'opening_balance_date' => $validatedData['opening_balance_date'] ? Carbon::createFromFormat('d-m-Y', $validatedData['opening_balance_date'])->format('Y-m-d') : null,
+                'is_active' => $isActive,
+                'updated_by' => auth()->user()->id,
+            ]);
+
+            // Prepare success message
+            $message = Lang::get('Account') . ' \'' . $account->account_name . '\' ' . Lang::get('successfully updated.');
+            return redirect()->route('master.account.index')->with('status', $message);
+        } catch (\Exception $e) {
+            // Handle exceptions
+            \Log::error('Error updating account: ' . $e->getMessage(), [
+                'request' => $request->all(),
+                'user_id' => auth()->user()->id,
+            ]);
+
+            return redirect()->back()->withInput()->withErrors(['error' => Lang::get('Failed to update account. Please try again.')]);
+        }
     }
 
     public function destroy($id)
@@ -138,6 +237,8 @@ class AccountController extends Controller
 
         $account = Account::findOrFail($id);
         $name = $account->account_name;
+        $account->updated_by = auth()->user()->id;
+        $account->save();
         $account->delete();
 
         $message = Lang::get('Account') . ' \'' . $name . '\' ' . Lang::get('successfully deleted.');
