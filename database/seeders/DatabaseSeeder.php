@@ -15,7 +15,12 @@ class DatabaseSeeder extends Seeder
         $this->call([
             LaratrustSeeder::class,
             CompanySeeder::class,
-            AccountsSeeder::class,
+            LiquidAssetsSeeder::class,
+            FixedAssetsSeeder::class,
+            LiabilitiesSeeder::class,
+            EquitySeeder::class,
+            IncomeSeeder::class,
+            ExpenseSeeder::class,
             ServicesSeeder::class,
             SpecialtiesSeeder::class,
             DoctorsSeeder::class,
