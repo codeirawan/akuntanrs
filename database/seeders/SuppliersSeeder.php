@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Faker\Factory as Faker;
 
-class SuppliersTableSeeder extends Seeder
+class SuppliersSeeder extends Seeder
 {
     public function run()
     {

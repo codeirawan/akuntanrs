@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 
-class PaymentsTableSeeder extends Seeder
+class PaymentsSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -26,7 +26,7 @@ class PaymentsTableSeeder extends Seeder
                 'receipt_id' => rand(1, 10), // Assuming receipts with IDs from 1 to 10 exist
                 'doctor_id' => rand(1, 10), // Assuming doctors with IDs from 1 to 10 exist
                 'supplier_id' => rand(1, 10), // Assuming suppliers with IDs from 1 to 10 exist
-                'account_id' => rand(1, 10), // Assuming accounts with IDs from 1 to 10 exist
+                'account_id' => rand(1, 5), // Assuming accounts with IDs from 1 to 10 exist
                 'amount' => round(rand(1000, 5000) / 100, 2), // Random amount between 10.00 and 50.00
                 'note' => 'Payment for transaction ' . ($i + 1),
                 'created_by' => 1, // Assuming user with ID 1 exists

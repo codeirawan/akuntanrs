@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Faker\Factory as Faker;
 use Carbon\Carbon;
 
-class FiscalYearsTableSeeder extends Seeder
+class FiscalYearsSeeder extends Seeder
 {
     public function run()
     {

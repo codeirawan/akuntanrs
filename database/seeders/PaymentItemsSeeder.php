@@ -6,7 +6,7 @@ use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class ReceiptItemsTableSeeder extends Seeder
+class PaymentItemsSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,8 +17,8 @@ class ReceiptItemsTableSeeder extends Seeder
     {
         // Seed 10 random receipt item records
         for ($i = 0; $i < 10; $i++) {
-            DB::table('receipt_items')->insert([
-                'receipt_id' => rand(1, 10), // Ensure these IDs exist
+            DB::table('payment_items')->insert([
+                'payment_id' => rand(1, 10), // Ensure these IDs exist
                 'item_id' => rand(1, 10),    // Ensure these IDs exist
                 'item_code' => 'ITEM-' . Str::random(5), // Example item code
                 'item_name' => 'Item ' . Str::random(5), // Example item name

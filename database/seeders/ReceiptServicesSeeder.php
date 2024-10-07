@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-class ReceiptServicesTableSeeder extends Seeder
+class ReceiptServicesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
