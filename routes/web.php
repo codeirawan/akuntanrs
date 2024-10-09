@@ -20,6 +20,8 @@ Route::middleware(['auth', 'verified'])->group(
                 Route::post('/payment/data', 'PaymentController@data')->name('payment.data');
                 Route::get('/payment/create/item', 'PaymentController@create')->name('payment.create.item');
                 Route::get('/payment/create/doctor', 'PaymentController@create')->name('payment.create.doctor');
+                Route::resource('journal', 'JournalEntryController');
+                Route::post('/journal/data', 'JournalEntryController@data')->name('journal.data');
             });
         });
 
