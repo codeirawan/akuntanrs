@@ -5,7 +5,7 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.0.2",
         "fideloper/proxy": "^4.4",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.2",
@@ -41,9 +41,6 @@
         }
     },
     "scripts": {
-        "post-install-cmd": [
-            "apt-get update && apt-get install -y libssl1.0.0"
-        ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
