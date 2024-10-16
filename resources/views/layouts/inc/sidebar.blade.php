@@ -28,7 +28,7 @@
                         <h4 class="kt-menu__section-text">{{ __('Transaction Management') }}</h4>
                         <i class="kt-menu__section-icon flaticon-more-v2"></i>
                     </li>
-                    <li class="kt-menu__item @if (Request::is('patient*')) kt-menu__item--here @endif"
+                    {{-- <li class="kt-menu__item @if (Request::is('patient*')) kt-menu__item--here @endif"
                         aria-haspopup="true">
                         <a href="{{ route('patient.index') }}" class="kt-menu__link">
                             <i class="kt-menu__link-icon fa-solid fa-hospital-user"></i>
@@ -47,6 +47,20 @@
                         <a href="{{ route('payment.index') }}" class="kt-menu__link">
                             <i class="kt-menu__link-icon fa-solid fa-file-invoice"></i>
                             <span class="kt-menu__link-text">{{ __('Payment') }}</span>
+                        </a>
+                    </li> --}}
+                    <li class="kt-menu__item @if (Request::is('cash*')) kt-menu__item--here @endif"
+                        aria-haspopup="true">
+                        <a href="{{ route('cash.index') }}" class="kt-menu__link">
+                            <i class="kt-menu__link-icon fa-solid fa-cash-register"></i>
+                            <span class="kt-menu__link-text">{{ __('Cash & Bank') }}</span>
+                        </a>
+                    </li>
+                    <li class="kt-menu__item @if (Request::is('journal*')) kt-menu__item--here @endif"
+                        aria-haspopup="true">
+                        <a href="{{ route('journal.index') }}" class="kt-menu__link">
+                            <i class="kt-menu__link-icon fa-solid fa-ticket"></i>
+                            <span class="kt-menu__link-text">{{ __('Journal Voucher') }}</span>
                         </a>
                     </li>
                 @endpermission
@@ -125,7 +139,7 @@
 
                 @permission(['view-master'])
                     <li class="kt-menu__section ">
-                        <h4 class="kt-menu__section-text">{{ __('Master Data Management') }}</h4>
+                        <h4 class="kt-menu__section-text">{{ __('Account Management') }}</h4>
                         <i class="kt-menu__section-icon flaticon-more-v2"></i>
                     </li>
                     <li class="kt-menu__item kt-menu__item--submenu @if (Request::is('master*')) kt-menu__item--open kt-menu__item--here @endif"
@@ -153,15 +167,15 @@
                                         <i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i>
                                         <span class="kt-menu__link-text">{{ __('Fiscal Years') }}</span>
                                     </a> --}}
-                                    <a href="{{ route('master.unit.index') }}" class="kt-menu__link">
+                                    {{-- <a href="{{ route('master.unit.index') }}" class="kt-menu__link">
                                         <i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i>
                                         <span class="kt-menu__link-text">{{ __('Units') }}</span>
-                                    </a>
+                                    </a> --}}
                                     <a href="{{ route('master.account.index') }}" class="kt-menu__link">
                                         <i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i>
                                         <span class="kt-menu__link-text">{{ __('Accounts') }}</span>
                                     </a>
-                                    <a href="{{ route('master.specialty.index') }}" class="kt-menu__link">
+                                    {{-- <a href="{{ route('master.specialty.index') }}" class="kt-menu__link">
                                         <i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i>
                                         <span class="kt-menu__link-text">{{ __('Specialties') }}</span>
                                     </a>
@@ -180,7 +194,7 @@
                                     <a href="{{ route('master.item.index') }}" class="kt-menu__link">
                                         <i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i>
                                         <span class="kt-menu__link-text">{{ __('Items') }}</span>
-                                    </a>
+                                    </a> --}}
                                 </li>
                             </ul>
                         </div>

@@ -33,6 +33,14 @@
     background: white;
 }
 
+.debit {
+    text-align: right;
+}
+
+.credit {
+    text-align: right;
+}
+
 .amount {
     text-align: right;
 }
