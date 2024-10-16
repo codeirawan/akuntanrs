@@ -9,13 +9,5 @@
             "src": "/(.*)",
             "dest": "/api/index.php"
         }
-    ],
-    "hooks": {
-        "build": {
-            "commands": [
-                "mkdir -p bootstrap/cache",
-                "chmod -R 775 bootstrap/cache"
-            ]
-        }
-    }
+    ]
 }
