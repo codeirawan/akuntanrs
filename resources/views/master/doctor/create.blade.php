@@ -76,5 +76,5 @@
 @endsection
 
 @section('script')
-    <script src="{{ asset(mix('js/form/validation.js')) }}"></script>
+    <script src="{{ asset('js/form/validation.js') }}"></script>
 @endsection

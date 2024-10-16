@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('style')
-    <link href="{{ asset(mix('css/auth.css')) }}" rel="stylesheet">
+    <link href="{{ asset('css/auth.css') }}" rel="stylesheet">
 @endsection
 
 @section('body')
@@ -55,6 +55,6 @@
         </div>
 
         @include('layouts.inc.script')
-        <script src="{{ asset(mix('js/auth.js')) }}"></script>
+        <script src="{{ asset('js/auth.js') }}"></script>
     </body>
 @endsection

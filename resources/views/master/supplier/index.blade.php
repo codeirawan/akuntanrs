@@ -5,7 +5,7 @@
 @endsection
 
 @section('style')
-    <link href="{{ asset(mix('css/datatable.css')) }}" rel="stylesheet">
+    <link href="{{ asset('css/datatable.css') }}" rel="stylesheet">
 @endsection
 
 @section('breadcrumb')
@@ -34,8 +34,8 @@
 @section('script')
     @include('layouts.inc.modal.delete', ['object' => 'supplier'])
 
-    <script src="{{ asset(mix('js/datatable.js')) }}"></script>
-    <script src="{{ asset(mix('js/tooltip.js')) }}"></script>
+    <script src="{{ asset('js/datatable.js') }}"></script>
+    <script src="{{ asset('js/tooltip.js') }}"></script>
     <script type="text/javascript">
         $('#kt_table_1').DataTable({
             processing: true,

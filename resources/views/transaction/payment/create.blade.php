@@ -222,7 +222,7 @@
 @endsection
 
 @section('script')
-    <script src="{{ asset(mix('js/form/validation.js')) }}"></script>
+    <script src="{{ asset('js/form/validation.js') }}"></script>
 
     <script type="text/javascript">
         $('.kt_selectpicker').selectpicker({

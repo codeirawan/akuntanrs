@@ -3,7 +3,7 @@
 @section('title', __('General Ledger') . ' | ' . config('app.name'))
 
 @section('style')
-    <link href="{{ asset(mix('css/datatable.css')) }}" rel="stylesheet">
+    <link href="{{ asset('css/datatable.css') }}" rel="stylesheet">
 @endsection
 
 @section('breadcrumb')
@@ -47,7 +47,7 @@
                         <div class="col">
                             <label for="year">{{ __('Select Year') }}</label>
                             <input type="number" name="year" id="year" class="form-control"
-                                value="{{ session('selected_year', date('Y')) }}" min="2000"
+                                value="{{ session('selected_year', date('Y') }}" min="2000"
                                 max="{{ date('Y') }}">
                         </div>
                         <div class="col">
@@ -112,7 +112,7 @@
 @endsection
 
 @section('script')
-    <script src="{{ asset(mix('js/datatable.js')) }}"></script>
+    <script src="{{ asset('js/datatable.js') }}"></script>
     <script type="text/javascript">
         $(document).ready(function() {
             $('#kt_table_1').DataTable({

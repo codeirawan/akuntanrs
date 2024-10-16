@@ -5,7 +5,7 @@
 @endsection
 
 @section('style')
-    <link href="{{ asset(mix('css/404.css')) }}" rel="stylesheet">
+    <link href="{{ asset('css/404.css') }}" rel="stylesheet">
 @endsection
 
 @section('body')

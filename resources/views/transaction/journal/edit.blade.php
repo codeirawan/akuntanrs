@@ -3,7 +3,7 @@
 @section('title', __('Edit Journal Entry') . ' | ' . config('app.name'))
 
 @section('style')
-    <link href="{{ asset(mix('css/datatable.css')) }}" rel="stylesheet">
+    <link href="{{ asset('css/datatable.css') }}" rel="stylesheet">
     <link href="{{ asset('css/journal.css') }}" rel="stylesheet">
 @endsection
 
@@ -186,7 +186,7 @@
 @endsection
 
 @section('script')
-    <script src="{{ asset(mix('js/datatable.js')) }}"></script>
+    <script src="{{ asset('js/datatable.js') }}"></script>
     <script type="text/javascript">
         // Disable the save button initially
         toggleSaveButton();

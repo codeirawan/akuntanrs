@@ -3,7 +3,7 @@
 @section('title', __('Cash Flow Statement') . ' | ' . config('app.name'))
 
 @section('style')
-    <link href="{{ asset(mix('css/datatable.css')) }}" rel="stylesheet">
+    <link href="{{ asset('css/datatable.css') }}" rel="stylesheet">
 @endsection
 
 @section('breadcrumb')
