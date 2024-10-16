@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', __('Edit Journal Entry') . ' | ' . config('app.name'))
+@section('title', __('Edit Cash & Bank') . ' | ' . config('app.name'))
 
 @section('style')
     <link href="{{ asset(mix('css/datatable.css')) }}" rel="stylesheet">
@@ -9,20 +9,22 @@
 
 @section('breadcrumb')
     <span class="kt-subheader__breadcrumbs-separator"></span>
-    <a href="{{ route('journal.index') }}" class="kt-subheader__breadcrumbs-link">{{ __('Journal Voucher') }}</a>
+    <a href="{{ route('journal.index') }}" class="kt-subheader__breadcrumbs-link">{{ __('Cash & Bank') }}</a>
 @endsection
 
 @section('content')
-    <form class="kt-form" method="POST" action="{{ route('journal.update', $journal->id) }}" enctype="multipart/form-data">
+    <form class="kt-form" method="POST" action="{{ route('cash.update', $journal->id) }}" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="kt-portlet" id="kt_page_portlet">
             <div class="kt-portlet__head kt-portlet__head--lg">
                 <div class="kt-portlet__head-label">
-                    <h3 class="kt-portlet__head-title">{{ __('Edit Journal Entry') }}</h3>
+                    <h3 class="kt-portlet__head-title">
+                        {{ __('Edit ') . ($journal->voucher_code && Str::startsWith($journal->voucher_code, 'RV') ? __('Receipt') : __('Payment')) }}
+                    </h3>
                 </div>
                 <div class="kt-portlet__head-toolbar">
-                    <a href="{{ route('journal.index') }}" class="btn btn-secondary kt-margin-r-10">
+                    <a href="{{ route('cash.index') }}" class="btn btn-secondary kt-margin-r-10">
                         <i class="la la-arrow-left"></i>
                         <span class="kt-hidden-mobile">{{ __('Back') }}</span>
                     </a>
@@ -43,11 +45,28 @@
                 @include('layouts.inc.alert')
 
                 <div class="card mb-4">
-                    <div class="card-header">{{ __('Edit Journal Information') }}</div>
+                    <div class="card-header">
+                        {{ __('Edit Detail ' . ($journal->voucher_code && Str::startsWith($journal->voucher_code, 'RV') ? 'Receipt' : 'Payment')) }}
+                    </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="form-group col-md-3">
-                                <label for="journal_date">{{ __('Journal Date') }}</label>
+                                <label for="voucher_code">{{ __('Journal No.') }}</label>
+                                <input id="voucher_code" name="voucher_code" type="text""
+                                    class="form-control @error('voucher_code') is-invalid @enderror"
+                                    value="{{ old('voucher_code', $journal->voucher_code) }}" autocomplete="off" readonly>
+
+                                @error('voucher_code')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="journal_date">
+                                    {{ $journal->voucher_code && Str::startsWith($journal->voucher_code, 'RV') ? __('Receipt') : __('Payment') }}
+                                    {{ __(' Date') }}
+                                </label>
                                 <input id="journal_date" name="journal_date" type="text"
                                     placeholder="{{ __('Select') }} {{ __('Date') }}"
                                     class="form-control @error('journal_date') is-invalid @enderror"
@@ -65,8 +84,12 @@
                                 <thead class="bg-secondary text-center">
                                     <tr>
                                         <th>{{ __('Account') }}</th>
-                                        <th>{{ __('Debit') }}</th>
-                                        <th>{{ __('Credit') }}</th>
+                                        @if (!empty($journals) && !Str::startsWith($journals[0]->voucher_code, 'PV'))
+                                            <th>{{ __('Amount') }}</th>
+                                        @endif
+                                        @if (!empty($journals) && !Str::startsWith($journals[0]->voucher_code, 'RV'))
+                                            <th>{{ __('Amount') }}</th>
+                                        @endif
                                         <th>{{ __('Remarks') }}</th>
                                         <th>{{ __('Action') }}</th>
                                     </tr>
@@ -75,7 +98,7 @@
                                     @foreach ($journals as $index => $entry)
                                         <tr class="journal-row">
                                             <td>
-                                                <!-- Hidden input for the journal entry ID -->
+                                                <!-- Hidden input for the Cash & Bank ID -->
                                                 <input type="hidden" name="entries[{{ $index }}][id]"
                                                     value="{{ $entry->id }}">
                                                 <input type="hidden" name="entries[{{ $index }}][is_remove]"
@@ -92,18 +115,22 @@
                                                     @endforeach
                                                 </select>
                                             </td>
-                                            <td>
-                                                <input type="number" name="entries[{{ $index }}][debit]"
-                                                    class="form-control debit" step="0.01"
-                                                    value="{{ old('entries.' . $index . '.debit', $entry->debit) }}"
-                                                    oninput="validateDebitCredit(this)">
-                                            </td>
-                                            <td>
-                                                <input type="number" name="entries[{{ $index }}][credit]"
-                                                    class="form-control credit" step="0.01"
-                                                    value="{{ old('entries.' . $index . '.credit', $entry->credit) }}"
-                                                    oninput="validateDebitCredit(this)">
-                                            </td>
+                                            @if (!Str::startsWith($entry->voucher_code, 'PV'))
+                                                <td>
+                                                    <input type="number" name="entries[{{ $index }}][debit]"
+                                                        class="form-control debit" step="0.01"
+                                                        value="{{ old('entries.' . $index . '.debit', $entry->debit) }}"
+                                                        oninput="validateDebitCredit(this)">
+                                                </td>
+                                            @endif
+                                            @if (!Str::startsWith($entry->voucher_code, 'RV'))
+                                                <td>
+                                                    <input type="number" name="entries[{{ $index }}][credit]"
+                                                        class="form-control credit" step="0.01"
+                                                        value="{{ old('entries.' . $index . '.credit', $entry->credit) }}"
+                                                        oninput="validateDebitCredit(this)">
+                                                </td>
+                                            @endif
                                             <td>
                                                 <input type="text" name="entries[{{ $index }}][note]"
                                                     class="form-control"
@@ -126,22 +153,21 @@
                                 <tfoot>
                                     <tr>
                                         <th colspan="1">{{ __('Total') }}</th>
-                                        <th id="total-debit"></th>
-                                        <th id="total-credit"></th>
-                                        <th id="balance-info"></th>
+                                        <th id="total-amount"></th>
                                         <th></th>
                                     </tr>
                                 </tfoot>
                             </table>
                         </div>
+
                     </div>
                 </div>
             </div>
         </div>
     </form>
     <!-- Modal -->
-    <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog"
+        aria-labelledby="confirmationModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -151,7 +177,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    Are you sure you want to remove this journal entry?
+                    Are you sure you want to remove this Cash & Bank?
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -199,13 +225,17 @@
             const debitInput = row.querySelector('.debit');
             const creditInput = row.querySelector('.credit');
 
-            // If Debit is filled, clear Credit
-            if (input === debitInput && debitInput.value) {
-                creditInput.value = ''; // Clear Credit
+            // If Debit input exists and is filled, clear Credit input if it exists
+            if (input === debitInput && debitInput && debitInput.value) {
+                if (creditInput) { // Check if the credit input exists before clearing it
+                    creditInput.value = ''; // Clear Credit
+                }
             }
-            // If Credit is filled, clear Debit
-            else if (input === creditInput && creditInput.value) {
-                debitInput.value = ''; // Clear Debit
+            // If Credit input exists and is filled, clear Debit input if it exists
+            else if (input === creditInput && creditInput && creditInput.value) {
+                if (debitInput) { // Check if the debit input exists before clearing it
+                    debitInput.value = ''; // Clear Debit
+                }
             }
 
             // Recalculate the balance after input changes
@@ -227,14 +257,33 @@
                 }
             });
 
-            let balance = totalDebit - totalCredit; // Calculate balance
-            $('#total-debit').text(totalDebit.toFixed(2)); // Display total debit
-            $('#total-credit').text(totalCredit.toFixed(2)); // Display total credit
-            $('#balance-info').text(balance.toFixed(2)); // Display balance
+            let totalAmount = totalDebit + totalCredit; // Calculate balance
+            $('#total-amount').text(totalAmount.toFixed(2)); // Display balance
         }
 
         // Add event listener for add journal row button
         document.getElementById('add-journal-row').addEventListener('click', function() {
+            const voucherCode =
+            '{{ $journal->voucher_code }}'; // Get the voucher code dynamically from the server-side
+            let debitField = '';
+            let creditField = '';
+
+            // Conditionally render debit and credit fields based on voucher code
+            if (!voucherCode.startsWith('PV')) {
+                debitField = `
+            <td>
+                <input type="number" name="entries[${journalIndex}][debit]" class="form-control debit" step="0.01" oninput="validateDebitCredit(this)">
+            </td>`;
+            }
+
+            if (!voucherCode.startsWith('RV')) {
+                creditField = `
+            <td>
+                <input type="number" name="entries[${journalIndex}][credit]" class="form-control credit" step="0.01" oninput="validateDebitCredit(this)">
+            </td>`;
+            }
+
+            // Generate new row with the appropriate fields
             const newRow = `
                 <tr class="journal-row">
                     <td>
@@ -246,12 +295,8 @@
                             @endforeach
                         </select>
                     </td>
-                    <td>
-                        <input type="number" name="entries[${journalIndex}][debit]" class="form-control debit" step="0.01" oninput="validateDebitCredit(this)">
-                    </td>
-                    <td>
-                        <input type="number" name="entries[${journalIndex}][credit]" class="form-control credit" step="0.01" oninput="validateDebitCredit(this)">
-                    </td>
+                    ${debitField}
+                    ${creditField}
                     <td>
                         <input type="text" name="entries[${journalIndex}][note]" class="form-control">
                     </td>
@@ -261,6 +306,8 @@
                     <input type="hidden" name="entries[${journalIndex}][is_remove]" value="0" class="remove-entry">
                 </tr>
             `;
+
+            // Append the new row
             $('#journal-table-body').append(newRow);
             journalIndex++;
 
@@ -273,6 +320,7 @@
                 showTick: true // Add checkmark to selected items
             }).selectpicker('refresh');
         });
+
 
         let rowToRemove; // Variable to hold the row to be removed
 

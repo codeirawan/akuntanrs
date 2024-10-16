@@ -4,46 +4,7 @@
 
 @section('style')
     <link href="{{ asset(mix('css/datatable.css')) }}" rel="stylesheet">
-    <style>
-        .btn-full-width {
-            width: 100%;
-        }
-
-        .file-upload-grid {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 10px;
-            /* Space between items */
-            margin-top: 10px;
-        }
-
-        .file-upload-item {
-            border: 1px solid #ccc;
-            padding: 5px;
-            text-align: center;
-        }
-
-        .remove-file {
-            color: red;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        /* Fix for Bootstrap select to keep the search input on top */
-        .bootstrap-select .dropdown-menu.inner {
-            max-height: 200px;
-            /* Set a fixed height for the dropdown */
-            overflow-y: auto;
-            /* Enable vertical scrolling for the options */
-        }
-
-        .bootstrap-select .bs-searchbox {
-            position: sticky;
-            top: 0;
-            z-index: 1;
-            background: white;
-        }
-    </style>
+    <link href="{{ asset('css/journal.css') }}" rel="stylesheet">
 @endsection
 
 @section('breadcrumb')
@@ -77,20 +38,6 @@
                     <div class="card-header">{{ __('Create Journal Information') }}</div>
                     <div class="card-body">
                         <div class="row">
-                            {{-- <div class="form-group col-md-3">
-                                <label for="voucher_code">{{ __('Journal No.') }}</label>
-                                <div class="input-group">
-                                    <span class="input-group-text">JV</span>
-                                    <input id="voucher_code" name="voucher_code" type="text"
-                                        class="form-control @error('voucher_code') is-invalid @enderror"
-                                        value="{{ old('voucher_code') }}" autocomplete="off">
-                                </div>
-                                @error('voucher_code')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div> --}}
                             <div class="form-group col-md-3">
                                 <label for="journal_date">{{ __('Journal Date') }}</label>
                                 <input id="journal_date" name="journal_date" type="text"
