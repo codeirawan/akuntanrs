@@ -41,6 +41,9 @@
         }
     },
     "scripts": {
+        "post-install-cmd": [
+            "apt-get update && apt-get install -y libssl1.0.0"
+        ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"

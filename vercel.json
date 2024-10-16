@@ -4,14 +4,5 @@
             "runtime": "vercel-php@0.4.1"
         }
     },
-    "routes": [{ "src": "/(.*)", "dest": "/api/index.php" }],
-    "builds": [
-    {
-      "src": "index.php",
-      "use": "@vercel/php",
-      "config": {
-        "postBuild": "apt-get update && apt-get install -y libssl1.0.0"
-      }
-    }
-  ]
+    "routes": [{ "src": "/(.*)", "dest": "/api/index.php" }]
 }
