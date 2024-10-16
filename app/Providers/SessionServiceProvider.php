@@ -19,8 +19,8 @@ class SessionServiceProvider extends ServiceProvider
         }
 
         // Create the bootstrap/cache directory if it doesn't exist
-        if (!file_exists('/var/task/user/bootstrap/cache')) {
-            mkdir('/var/task/user/bootstrap/cache', 0777, true);
+        if (!file_exists('/bootstrap/cache')) {
+            mkdir('/bootstrap/cache', 0777, true);
         }
     }
 
