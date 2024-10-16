@@ -40,6 +40,9 @@ class JournalEntryController extends Controller
             'created_at'
         )
             ->with('account:id,account_name,sub_account_name') // Fetch related account details
+            ->where(function ($query) {
+                $query->where('voucher_code', 'like', 'JV%');
+            })
             ->orderByDesc('voucher_code')
             ->get();
 
