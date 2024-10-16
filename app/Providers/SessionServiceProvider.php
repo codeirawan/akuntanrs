@@ -18,10 +18,6 @@ class SessionServiceProvider extends ServiceProvider
             mkdir('/tmp/sessions', 0777, true);
         }
 
-        // Create the bootstrap/cache directory if it doesn't exist
-        if (!file_exists('/bootstrap/cache')) {
-            mkdir('/bootstrap/cache', 0777, true);
-        }
     }
 
     /**
