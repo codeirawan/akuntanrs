@@ -12,5 +12,5 @@
     ],
     "public": true,
     "buildCommand": "npm run production",
-    "outputDirectory": "public",
+    "outputDirectory": "public"
 }
