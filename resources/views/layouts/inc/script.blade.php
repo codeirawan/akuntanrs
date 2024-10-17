@@ -30,9 +30,9 @@
         }
     };
 </script>
-<script src="{{ asset(mix('js/app.js')) }}"></script>
+<script src="{{ asset('mix/js/app.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
-<script>
+{{-- <script>
     $(document).ready(function() {
         // Global function to format numbers in European style (1.000.000,00)
         window.formatNumber = function(num) {
@@ -75,6 +75,6 @@
             });
         });
     });
-</script>
+</script> --}}
 {{-- <script src="{{ asset('js/debug.js') }}"></script> --}}
 @yield('script')

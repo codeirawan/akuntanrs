@@ -53,6 +53,6 @@
 
 @section('script')
     <script type="text/javascript">
-        $('#kt_login_form').attr('action', "{{ route('login') }}");
+        // $('#kt_login_form').attr('action', "{{ route('login') }}");
     </script>
 @endsection

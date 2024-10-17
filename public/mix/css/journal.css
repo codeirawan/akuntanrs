@@ -1,0 +1,54 @@
+.btn-full-width {
+    width: 100%;
+}
+
+.file-upload-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.file-upload-item {
+    border: 1px solid #ccc;
+    padding: 5px;
+    text-align: center;
+}
+
+.remove-file {
+    color: red;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.bootstrap-select .dropdown-menu.inner {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.bootstrap-select .bs-searchbox {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: white;
+}
+
+.debit {
+    text-align: right;
+}
+
+.credit {
+    text-align: right;
+}
+
+.amount {
+    text-align: right;
+}
+
+.receipt-amount {
+    text-align: right;
+}
+
+.payment-amount {
+    text-align: right;
+}
