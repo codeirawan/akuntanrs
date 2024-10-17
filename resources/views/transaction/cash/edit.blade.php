@@ -20,7 +20,7 @@
             <div class="kt-portlet__head kt-portlet__head--lg">
                 <div class="kt-portlet__head-label">
                     <h3 class="kt-portlet__head-title">
-                        {{ __('Edit ') . ($journal->voucher_code && Str::startsWith($journal->voucher_code, 'RV') ? __('Receipt') : __('Payment') }}
+                        {{ __('Edit ') . ($journal->voucher_code && Str::startsWith($journal->voucher_code, 'RV') ? __('Receipt') : __('Payment')) }}
                     </h3>
                 </div>
                 <div class="kt-portlet__head-toolbar">
@@ -46,7 +46,7 @@
 
                 <div class="card mb-4">
                     <div class="card-header">
-                        {{ __('Edit Detail ' . ($journal->voucher_code && Str::startsWith($journal->voucher_code, 'RV') ? 'Receipt' : 'Payment') }}
+                        {{ __('Edit Detail ' . ($journal->voucher_code && Str::startsWith($journal->voucher_code, 'RV') ? 'Receipt' : 'Payment')) }}
                     </div>
                     <div class="card-body">
                         <div class="row">
