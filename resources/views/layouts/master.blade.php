@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700">
     @yield('style')
     <!-- Styles -->
-    <link rel="stylesheet" href="{{ asset('mix/css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/fonts/fontawesome/css/all.min.css') }}">
     <link rel="shortcut icon" href="{{ asset('images/logo/favicon.ico') }}" />
 </head>

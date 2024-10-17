@@ -30,7 +30,7 @@
         }
     };
 </script>
-<script src="{{ asset('mix/js/app.js') }}"></script>
+<script src="{{ asset('js/app.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
 {{-- <script>
     $(document).ready(function() {
