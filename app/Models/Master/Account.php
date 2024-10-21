@@ -2,6 +2,7 @@
 
 namespace App\Models\Master;
 
+use App\Models\Transaction\JournalEntry;
 use App\Models\Transaction\Payment;
 use App\Models\Transaction\Receipt;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -31,6 +32,11 @@ class Account extends Model
         'updated_by',
         'created_by',
     ];
+
+    public function journals()
+    {
+        return $this->hasMany(JournalEntry::class);
+    }
 
     // Relasi ke tabel receipt (penerimaan)
     public function receipts()

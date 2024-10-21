@@ -22,12 +22,13 @@
                     <div class="form-row align-items-end">
                         <div class="col">
                             <label for="account_id">{{ __('Select Account') }}</label>
-                            <select name="account_id" id="account_id" class="form-control">
-                                <option value="">{{ __('All Accounts') }}</option>
-                                @foreach ($accounts as $account)
+                            <select name="account_id" id="account_id" class="form-control kt_selectpicker"
+                                data-live-search="true" title="{{ __('Choose') }} {{ __('Account') }}">
+                                {{-- <option value="">{{ __('All Accounts') }}</option> --}}
+                                @foreach ($accounts as $index => $account)
                                     <option value="{{ $account->id }}"
-                                        {{ session('selected_account') == $account->id ? 'selected' : '' }}>
-                                        {{ $account->account_code }} - {{ $account->account_name }}
+                                        {{ session('selected_account') == $account->id || ($index === 0 && !session('selected_account')) ? 'selected' : '' }}>
+                                        {{ $account->account_code }} - {{ $account->sub_account_name }}
                                     </option>
                                 @endforeach
                             </select>
@@ -38,7 +39,7 @@
                                 <option value="">{{ __('All Months') }}</option>
                                 @for ($i = 1; $i <= 12; $i++)
                                     <option value="{{ $i }}"
-                                        {{ session('selected_month') == $i ? 'selected' : '' }}>
+                                        {{ session('selected_month') == $i || (session('selected_month') === null && $i == date('n')) ? 'selected' : '' }}>
                                         {{ \Carbon\Carbon::create()->month($i)->format('F') }}
                                     </option>
                                 @endfor
@@ -70,29 +71,17 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($accounts as $account)
-                                @foreach ($account->receipts as $receipt)
-                                    <tr>
-                                        <td>{{ $receipt->receipt_code }}</td>
-                                        <td>{{ $receipt->receipt_date }}</td>
-                                        <td>{{ $account->account_code }} - {{ $account->account_name }}</td>
-                                        <td>{{ number_format($receipt->amount, 2) }}</td>
-                                        <td>0.00</td>
-                                        <td></td>
-                                        <td>{{ $receipt->note }}</td>
-                                    </tr>
-                                @endforeach
-                                @foreach ($account->payments as $payment)
-                                    <tr>
-                                        <td>{{ $payment->payment_code }}</td>
-                                        <td>{{ $payment->payment_date }}</td>
-                                        <td>{{ $account->account_code }} - {{ $account->account_name }}</td>
-                                        <td>0.00</td>
-                                        <td>{{ number_format($payment->amount, 2) }}</td>
-                                        <td></td>
-                                        <td>{{ $payment->note }}</td>
-                                    </tr>
-                                @endforeach
+                            @foreach ($journals as $journal)
+                                <tr>
+                                    <td>{{ $journal->voucher_code }}</td>
+                                    <td>{{ $journal->journal_date->format('Y/m/d') }}</td>
+                                    <td>{{ $journal->account->account_code ?? 'N/A' }}
+                                        {{ $journal->account->sub_account_name ?? 'N/A' }}</td>
+                                    <td>{{ number_format($journal->debit, 2) }}</td>
+                                    <td>{{ number_format($journal->credit, 2) }}</td>
+                                    <td>{{ number_format($journal->debit - $journal->credit, 2) }}</td>
+                                    <td>{{ $journal->note }}</td>
+                                </tr>
                             @endforeach
                         </tbody>
                         <tfoot>
@@ -151,5 +140,14 @@
             // Set the form action with the query parameters
             this.action = `{{ route('general-ledger.index') }}?${query}`;
         };
+    </script>
+    <script type="text/javascript">
+        $('.kt_selectpicker').selectpicker({
+            liveSearch: true,
+            liveSearchPlaceholder: "{{ __('Search Account') }}",
+            noneResultsText: "{{ __('No matching results') }} {0}",
+            showContent: true,
+            showTick: true
+        });
     </script>
 @endsection

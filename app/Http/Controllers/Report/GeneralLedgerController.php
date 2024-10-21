@@ -5,13 +5,16 @@ namespace App\Http\Controllers\Report;
 use Illuminate\Http\Request;
 use App\Models\Master\Account;
 use App\Http\Controllers\Controller;
+use App\Models\Transaction\JournalEntry;
 
 class GeneralLedgerController extends Controller
 {
     public function index(Request $request)
     {
+        $accounts = Account::all();
+
         // Get selected filters from the session if they exist
-        $selectedAccount = $request->session()->get('selected_account', null);
+        $selectedAccount = $request->session()->get('selected_account', 1);
         $selectedMonth = $request->session()->get('selected_month', null);
         $selectedYear = $request->session()->get('selected_year', date('Y'));
 
@@ -26,42 +29,30 @@ class GeneralLedgerController extends Controller
             return redirect()->route('general-ledger.index');
         }
 
-        // Fetch accounts with their respective receipts (debit) and payments (credit)
-        $accounts = Account::with([
-            'receipts' => function ($query) use ($selectedMonth, $selectedYear) {
-                if ($selectedMonth) {
-                    $query->whereMonth('receipt_date', $selectedMonth);
-                }
-                $query->whereYear('receipt_date', $selectedYear)
-                    ->orderBy('receipt_date');
-            },
-            'payments' => function ($query) use ($selectedMonth, $selectedYear) {
-                if ($selectedMonth) {
-                    $query->whereMonth('payment_date', $selectedMonth);
-                }
-                $query->whereYear('payment_date', $selectedYear)
-                    ->orderBy('payment_date');
-            }
-        ])
+        // Fetch journal entries based on the selected filters
+        $journals = JournalEntry::with('account') // Load related account data
             ->when($selectedAccount, function ($query) use ($selectedAccount) {
-                $query->where('id', $selectedAccount);
+                $query->where('account_id', $selectedAccount);
             })
+            ->when($selectedMonth, function ($query) use ($selectedMonth) {
+                $query->whereMonth('journal_date', $selectedMonth);
+            })
+            ->when($selectedYear, function ($query) use ($selectedYear) {
+                $query->whereYear('journal_date', $selectedYear);
+            })
+            ->orderBy('journal_date')
             ->get();
 
         // Initialize totals
         $totalDebit = 0;
         $totalCredit = 0;
 
-        // Calculate total debit and credit for the selected accounts
-        foreach ($accounts as $account) {
-            foreach ($account->receipts as $receipt) {
-                $totalDebit += $receipt->amount;
-            }
-            foreach ($account->payments as $payment) {
-                $totalCredit += $payment->amount;
-            }
+        // Calculate total debit and credit from journal entries
+        foreach ($journals as $journal) {
+            $totalDebit += $journal->debit;
+            $totalCredit += $journal->credit;
         }
 
-        return view('report.general-ledger.index', compact('accounts', 'totalDebit', 'totalCredit', 'selectedYear'));
+        return view('report.general-ledger.index', compact('accounts', 'journals', 'totalDebit', 'totalCredit', 'selectedYear'));
     }
 }

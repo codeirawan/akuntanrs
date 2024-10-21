@@ -25,6 +25,10 @@ class JournalEntry extends Model
         'created_by',
     ];
 
+    protected $casts = [
+        'journal_date' => 'datetime',
+    ];
+
     public function account()
     {
         return $this->belongsTo(Account::class, 'account_id');
