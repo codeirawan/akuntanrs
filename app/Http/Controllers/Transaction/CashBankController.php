@@ -68,10 +68,12 @@ class CashBankController extends Controller
                 return $entry->account ? $entry->account->account_code . ' ' . $entry->account->sub_account_name : '';
             })
             ->addColumn('debit', function ($entry) {
-                return $entry['debit'] != 0 ? number_format($entry['debit'], 2, ',', '.') : '';
+                return $entry['debit'] != 0 ? number_format($entry['debit'], 2) : '';
+                // return $entry['debit'] != 0 ? number_format($entry['debit'], 2, ',', '.') : '';
             })
             ->addColumn('credit', function ($entry) {
-                return $entry['credit'] != 0 ? number_format($entry['credit'], 2, ',', '.') : '';
+                return $entry['credit'] != 0 ? number_format($entry['credit'], 2) : '';
+                // return $entry['credit'] != 0 ? number_format($entry['credit'], 2, ',', '.') : '';
             })
             ->addColumn('note', function ($entry) {
                 return $entry['note'] ?? ''; // Handle null notes
