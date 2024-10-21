@@ -146,12 +146,7 @@
                 }
             ],
             drawCallback: function() {
-                const cell = document.querySelector('td.text-left.sorting_1');
-                if (cell) {
-                    console.log(cell.innerHTML); // This will now work correctly
-                } else {
-                    console.error('Element not found');
-                }
+                $('.btn-tooltip').tooltip();
             }
         });
     </script>
