@@ -47,7 +47,7 @@
                         <div class="col">
                             <label for="year">{{ __('Select Year') }}</label>
                             <input type="number" name="year" id="year" class="form-control"
-                                value="{{ session('selected_year', date('Y') }}" min="2000"
+                                value="{{ session('selected_year', date('Y')) }}" min="2000"
                                 max="{{ date('Y') }}">
                         </div>
                         <div class="col">
