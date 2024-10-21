@@ -351,7 +351,7 @@
             journalIndex++;
 
             // Reinitialize selectpicker for the new select element and customize live search
-            $('.kt_selectpicker').selectpicker({
+            $('.kt_selectpicker:last').selectpicker({
                 liveSearch: true,
                 liveSearchPlaceholder: "{{ __('Search Account') }}", // Add a placeholder if desired
                 noneResultsText: "{{ __('No matching results') }} {0}", // Customize text when no match is found

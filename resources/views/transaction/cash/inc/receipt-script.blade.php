@@ -192,7 +192,7 @@
         toggleAddButtonReceipt(); // Update Add button visibility
 
         // Reinitialize selectpicker for the new select element
-        $('.kt_selectpicker').selectpicker({
+        $('.kt_selectpicker:last').selectpicker({
             liveSearch: true,
             liveSearchPlaceholder: "{{ __('Search Account') }}",
             noneResultsText: "{{ __('No matching results') }} {0}",
