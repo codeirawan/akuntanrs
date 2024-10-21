@@ -235,7 +235,7 @@ class CashBankController extends Controller
             // Validate the request input
             $this->validate($request, [
                 'journal_date' => ['required', 'date_format:d-m-Y'],
-                'entries' => ['required', 'array', 'min:2'], // At least 2 accounts (debit and credit)
+                // 'entries' => ['required', 'array', 'min:2'], // At least 2 accounts (debit and credit)
                 'entries.*.account_id' => ['required', 'exists:accounts,id'],
                 'entries.*.debit' => ['nullable', 'numeric'],
                 'entries.*.credit' => ['nullable', 'numeric'],
@@ -256,14 +256,6 @@ class CashBankController extends Controller
             $filteredEntries = array_filter($request->entries, function ($entry) {
                 return !isset($entry['is_remove']) || $entry['is_remove'] != 1;
             });
-
-            $totalDebit = array_sum(array_column($filteredEntries, 'debit'));
-            $totalCredit = array_sum(array_column($filteredEntries, 'credit'));
-
-            // Ensure that total debit equals total credit
-            if ($totalDebit != $totalCredit) {
-                return redirect()->back()->withErrors(['msg' => 'Total debit must equal total credit'])->withInput();
-            }
 
             // Find the journal entry by ID
             $journal = JournalEntry::findOrFail($id); // Change to use $id from the route

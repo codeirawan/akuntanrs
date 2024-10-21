@@ -94,11 +94,10 @@
                                         <th>{{ __('Action') }}</th>
                                     </tr>
                                 </thead>
-                                <tbody id="journal-table-body">
+                                <tbody id="cash-table-body">
                                     @foreach ($journals as $index => $entry)
                                         <tr class="journal-row">
                                             <td>
-                                                <!-- Hidden input for the Cash & Bank ID -->
                                                 <input type="hidden" name="entries[{{ $index }}][id]"
                                                     value="{{ $entry->id }}">
                                                 <input type="hidden" name="entries[{{ $index }}][is_remove]"
@@ -117,18 +116,16 @@
                                             </td>
                                             @if (!Str::startsWith($entry->voucher_code, 'PV'))
                                                 <td>
-                                                    <input type="number" name="entries[{{ $index }}][debit]"
+                                                    <input type="text" name="entries[{{ $index }}][debit]"
                                                         class="form-control debit" step="0.01"
-                                                        value="{{ old('entries.' . $index . '.debit', $entry->debit) }}"
-                                                        oninput="validateDebitCredit(this)">
+                                                        value="{{ old('entries.' . $index . '.debit', $entry->debit) }}">
                                                 </td>
                                             @endif
                                             @if (!Str::startsWith($entry->voucher_code, 'RV'))
                                                 <td>
-                                                    <input type="number" name="entries[{{ $index }}][credit]"
+                                                    <input type="text" name="entries[{{ $index }}][credit]"
                                                         class="form-control credit" step="0.01"
-                                                        value="{{ old('entries.' . $index . '.credit', $entry->credit) }}"
-                                                        oninput="validateDebitCredit(this)">
+                                                        value="{{ old('entries.' . $index . '.credit', $entry->credit) }}">
                                                 </td>
                                             @endif
                                             <td>
@@ -147,13 +144,13 @@
                                 <tr class="journal-row">
                                     <td colspan="4">
                                         <button type="button" class="btn btn-primary btn-full-width"
-                                            id="add-journal-row">+</button>
+                                            id="add-cash-row">+</button>
                                     </td>
                                 </tr>
-                                <tfoot>
+                                <tfoot class="text-right">
                                     <tr>
                                         <th colspan="1">{{ __('Total') }}</th>
-                                        <th id="total-amount"></th>
+                                        <th id="total-journal-amount"></th>
                                         <th></th>
                                     </tr>
                                 </tfoot>
@@ -211,76 +208,93 @@
     </div>
 @endsection
 
+
 @section('script')
     <script src="{{ asset('js/datatable.js') }}"></script>
     <script type="text/javascript">
-        // Disable the save button initially
-        toggleSaveButton();
+        // Initialize the balance on page load
+        $(document).ready(function() {
+            calculateAmount();
+            toggleSaveButton();
+            formatAmountsOnLoad(); // Call to format amounts on load
+        });
 
         let journalIndex = {{ count($journals) }};
 
-        // Function to validate Debit and Credit fields
-        function validateDebitCredit(input) {
-            const row = input.closest('.journal-row'); // Get the current row
-            const debitInput = row.querySelector('.debit');
-            const creditInput = row.querySelector('.credit');
+        // Function to format numbers to the desired format: 7.999.783,78
+        function formatAmount(amount) {
+            // Parse the amount to a number (if it's a string) to ensure correct formatting
+            const parsedAmount = parseFloat(amount);
 
-            // If Debit input exists and is filled, clear Credit input if it exists
-            if (input === debitInput && debitInput && debitInput.value) {
-                if (creditInput) { // Check if the credit input exists before clearing it
-                    creditInput.value = ''; // Clear Credit
-                }
-            }
-            // If Credit input exists and is filled, clear Debit input if it exists
-            else if (input === creditInput && creditInput && creditInput.value) {
-                if (debitInput) { // Check if the debit input exists before clearing it
-                    debitInput.value = ''; // Clear Debit
-                }
-            }
-
-            // Recalculate the balance after input changes
-            calculateBalance();
-            toggleSaveButton();
+            // Format the amount using toLocaleString
+            return parsedAmount.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
         }
 
-        // Function to calculate the balance and totals
-        function calculateBalance() {
+        // Function to format amounts for all existing rows on page load
+        function formatAmountsOnLoad() {
+            $('.journal-row').each(function() {
+                const debitInput = $(this).find('.debit');
+                const creditInput = $(this).find('.credit');
+
+                // Format the existing values
+                const formattedDebit = formatAmount(debitInput.val());
+                const formattedCredit = formatAmount(creditInput.val());
+
+                // Set the formatted values back into the inputs
+                debitInput.val(formattedDebit);
+                creditInput.val(formattedCredit);
+            });
+        }
+
+        function calculateAmount() {
             let totalDebit = 0;
             let totalCredit = 0;
 
             $('.journal-row').each(function() {
                 // Check if the row is marked for removal
                 if ($(this).find('.remove-entry').val() !== '1') {
-                    // Only calculate if the row is not marked for deletion
-                    totalDebit += parseFloat($(this).find('.debit').val()) || 0; // Sum debit values
-                    totalCredit += parseFloat($(this).find('.credit').val()) || 0; // Sum credit values
+                    // Ensure debit and credit have default values
+                    const debitValue = $(this).find('.debit').val() || '0';
+                    const creditValue = $(this).find('.credit').val() || '0';
+
+                    // Parse float after removing any commas (thousands separators)
+                    let debitAmount = parseFloat(debitValue.replace(/,/g, '')) || 0;
+                    let creditAmount = parseFloat(creditValue.replace(/,/g, '')) || 0;
+
+                    totalDebit += debitAmount; // Sum debit values
+                    totalCredit += creditAmount; // Sum credit values
                 }
             });
 
-            let totalAmount = totalDebit + totalCredit; // Calculate balance
-            $('#total-amount').text(totalAmount.toFixed(2)); // Display balance
+            // Calculate the balance as difference between debit and credit
+            let totalAmount = totalDebit + totalCredit; // Change to subtraction for balance
+
+            // Format the total amount before displaying
+            $('#total-journal-amount').text(formatAmount(totalAmount.toFixed(2))); // Display balance
         }
 
         // Add event listener for add journal row button
-        document.getElementById('add-journal-row').addEventListener('click', function() {
-            const voucherCode =
-            '{{ $journal->voucher_code }}'; // Get the voucher code dynamically from the server-side
+        document.getElementById('add-cash-row').addEventListener('click', function() {
+            const voucherCode = '{{ $journal->voucher_code }}';
             let debitField = '';
             let creditField = '';
 
             // Conditionally render debit and credit fields based on voucher code
             if (!voucherCode.startsWith('PV')) {
                 debitField = `
-            <td>
-                <input type="number" name="entries[${journalIndex}][debit]" class="form-control debit" step="0.01" oninput="validateDebitCredit(this)">
-            </td>`;
+                <td>
+                    <input type="text" name="entries[${journalIndex}][debit]" class="form-control debit" step="0.01">
+                </td>`;
             }
 
             if (!voucherCode.startsWith('RV')) {
                 creditField = `
-            <td>
-                <input type="number" name="entries[${journalIndex}][credit]" class="form-control credit" step="0.01" oninput="validateDebitCredit(this)">
-            </td>`;
+                <td>
+                    <input type="text" name="entries[${journalIndex}][credit]" class="form-control credit" step="0.01">
+                </td>`;
             }
 
             // Generate new row with the appropriate fields
@@ -308,52 +322,40 @@
             `;
 
             // Append the new row
-            $('#journal-table-body').append(newRow);
+            $('#cash-table-body').append(newRow);
             journalIndex++;
 
-            // Reinitialize selectpicker for the new select element and customize live search
-            $('.kt_selectpicker').selectpicker({
+            // Reinitialize selectpicker for the newly added select element
+            $('.kt_selectpicker:last').selectpicker({
                 liveSearch: true,
-                liveSearchPlaceholder: "{{ __('Search Account') }}", // Add a placeholder if desired
-                noneResultsText: "{{ __('No matching results') }} {0}", // Customize text when no match is found
-                showContent: true, // Ensure the dropdown stays visible
-                showTick: true // Add checkmark to selected items
+                liveSearchPlaceholder: "{{ __('Search Account') }}", // Placeholder for search
+                noneResultsText: "{{ __('No matching results') }} {0}", // Text for no match
+                showContent: true, // Dropdown visibility
+                showTick: true // Show checkmark for selected
             }).selectpicker('refresh');
         });
 
-
-        let rowToRemove; // Variable to hold the row to be removed
-
-        // Event delegation to handle the removal of journal rows
-        $('#journal-table-body').on('click', '.remove-journal-row', function() {
-            rowToRemove = $(this).closest('tr'); // Store the row to be removed
-            $('#confirmationModal').modal('show'); // Show the confirmation modal
-        });
-
-        // Handle the confirmation button click
-        $('#confirmRemove').on('click', function() {
-            const $row = rowToRemove; // Get the stored row
-            $row.find('.remove-entry').val('1'); // Mark the entry as removed
-            $row.hide(); // Hide the row
-
-            // Calculate balance and toggle save button
-            calculateBalance();
-            toggleSaveButton();
-
-            $('#confirmationModal').modal('hide'); // Hide the modal after confirmation
-        });
-
-        // Function to toggle the save button based on validation
         function toggleSaveButton() {
-            // Recalculate total debit and credit
             let totalDebit = 0;
             let totalCredit = 0;
 
+            // Loop through each journal-row that is not marked for removal
             $('.journal-row').filter(function() {
                 return $(this).find('.remove-entry').val() != 1; // Exclude removed entries
             }).each(function() {
-                totalDebit += parseFloat($(this).find('.debit').val()) || 0; // Default to 0 if NaN
-                totalCredit += parseFloat($(this).find('.credit').val()) || 0; // Default to 0 if NaN
+                const debitInput = $(this).find('.debit').val() || ''; // Ensure debit is not undefined
+                const creditInput = $(this).find('.credit').val() || ''; // Ensure credit is not undefined
+
+                // Only try to replace if the value is a valid non-empty string
+                if (debitInput) {
+                    totalDebit += parseFloat(debitInput.replace(/\./g, '').replace(',', '.')) ||
+                        0; // Safely parse debit values
+                }
+
+                if (creditInput) {
+                    totalCredit += parseFloat(creditInput.replace(/\./g, '').replace(',', '.')) ||
+                        0; // Safely parse credit values
+                }
             });
 
             // Update the displayed totals
@@ -367,20 +369,19 @@
             let journalDate = $('#journal_date').val().trim();
 
             // Enable button if there are debit/credit values, balance is zero, and journal date is not empty
-            if (hasDebitOrCredit && totalDebit === totalCredit && journalDate !== '') {
+            if (hasDebitOrCredit && journalDate !== '') {
                 $('button[type="submit"]').prop('disabled', false);
             } else {
                 $('button[type="submit"]').prop('disabled', true);
             }
         }
 
-        // Event listener to toggle save button on input change
-        $('.debit, .credit, #journal_date').on('input change', toggleSaveButton);
-
-        // Initialize the balance on page load
-        $(document).ready(function() {
-            calculateBalance();
-            toggleSaveButton();
+        // Event delegation for debit and credit fields on blur
+        $('#cash-table-body').on('blur', '.debit, .credit', function() {
+            const formattedValue = formatAmount($(this).val());
+            $(this).val(formattedValue); // Set the formatted value back into the input
+            toggleSaveButton(); // Recalculate and validate after formatting
+            calculateAmount();
         });
     </script>
     <script>
