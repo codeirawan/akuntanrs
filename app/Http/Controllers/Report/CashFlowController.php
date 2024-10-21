@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers\Report;
 
-use App\Models\Transaction\Receipt;
-use App\Models\Transaction\Payment;
 use App\Http\Controllers\Controller;
+use App\Models\Transaction\JournalEntry;
 use Illuminate\Http\Request;
 
 class CashFlowController extends Controller
@@ -25,9 +24,12 @@ class CashFlowController extends Controller
             return redirect()->route('cash-flow.index');
         }
 
-        // Aggregate data for cash inflows and outflows
-        $cashInflows = Receipt::whereBetween('receipt_date', [$selectedStartDate, $selectedEndDate])->sum('amount');
-        $cashOutflows = Payment::whereBetween('payment_date', [$selectedStartDate, $selectedEndDate])->sum('amount');
+        // Aggregate cash inflows (debits) and outflows (credits) from journal entries
+        $cashInflows = JournalEntry::whereBetween('journal_date', [$selectedStartDate, $selectedEndDate])
+            ->sum('debit'); // Sum of debits for cash inflows
+
+        $cashOutflows = JournalEntry::whereBetween('journal_date', [$selectedStartDate, $selectedEndDate])
+            ->sum('credit'); // Sum of credits for cash outflows
 
         // Calculate net cash flow
         $netCashFlow = $cashInflows - $cashOutflows;
