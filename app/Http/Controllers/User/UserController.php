@@ -25,7 +25,7 @@ class UserController extends Controller
 
         $roles = Role::select('id', 'display_name')->orderBy('id')->where(
             'name',
-            // '!=',
+            '!=',
             'super_administrator'
         )->get();
 
@@ -51,7 +51,7 @@ class UserController extends Controller
             ->withoutGlobalScope('active')
             ->where(
                 'roles.name',
-                // '!=',
+                '!=',
                 'super_administrator'
             )
             ->get();
@@ -108,7 +108,7 @@ class UserController extends Controller
 
         $roles = Role::select('id', 'display_name')->orderBy('id')->where(
             'name',
-            // '!=',
+            '!=',
             'super_administrator'
         )->get();
 
@@ -202,7 +202,7 @@ class UserController extends Controller
         $userRole = $user->roles()->select('id')->first()->id;
         $roles = Role::select('id', 'display_name')->orderBy('id')->where(
             'name',
-            // '!=',
+            '!=',
             'super_administrator'
         )->get();
 
