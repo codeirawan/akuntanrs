@@ -27,6 +27,8 @@ class JournalEntry extends Model
 
     protected $casts = [
         'journal_date' => 'datetime',
+        'debit' => 'float',
+        'credit' => 'float',
     ];
 
     public function account()
