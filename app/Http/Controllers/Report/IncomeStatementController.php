@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Report;
 
 use App\Http\Controllers\Controller;
-use App\Models\Transaction\Payment;
-use App\Models\Transaction\Receipt;
+use App\Models\Transaction\JournalEntry;
 use Illuminate\Http\Request;
 
 class IncomeStatementController extends Controller
@@ -25,9 +24,22 @@ class IncomeStatementController extends Controller
             return redirect()->route('income-statement.index');
         }
 
-        // Fetch income and expenses for the selected date range
-        $incomes = Receipt::whereBetween('receipt_date', [$selectedStartDate, $selectedEndDate])->sum('amount');
-        $expenses = Payment::whereBetween('payment_date', [$selectedStartDate, $selectedEndDate])->sum('amount');
+        // Fetch journal entries for the selected date range
+        $journalEntries = JournalEntry::whereBetween('journal_date', [$selectedStartDate, $selectedEndDate])
+            ->where(function ($query) {
+                $query->where('voucher_code', 'like', 'RV%')
+                    ->orWhere('voucher_code', 'like', 'PV%');
+            })
+            ->get();
+
+        // Calculate incomes and expenses
+        $incomes = $journalEntries->sum(function ($entry) {
+            return (float) $entry->debit; // Cast debit to float for accurate sum
+        });
+
+        $expenses = $journalEntries->sum(function ($entry) {
+            return (float) $entry->credit; // Cast credit to float for accurate sum
+        });
 
         // Calculate the net income
         $netIncome = $incomes - $expenses;
