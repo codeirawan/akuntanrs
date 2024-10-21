@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Report;
 
 use App\Http\Controllers\Controller;
-use App\Models\Transaction\Payment;
-use App\Models\Transaction\Receipt;
+use App\Models\Transaction\JournalEntry;
 use Illuminate\Http\Request;
 
 class BalanceSheetController extends Controller
@@ -25,19 +24,29 @@ class BalanceSheetController extends Controller
             return redirect()->route('balance-sheet.index');
         }
 
-        // Aggregate data for balance sheet
-        $assets = Receipt::whereHas('account', function ($query) {
-            $query->where('account_type', 'asset');
-        })->whereBetween('receipt_date', [$selectedStartDate, $selectedEndDate])->sum('amount');
+        // Aggregate data for balance sheet using JournalEntry model
+        $assets = JournalEntry::whereHas('account', function ($query) {
+            $query->whereIn('account_type', [1, 2]); // Liquid and fixed assets
+        })
+            ->whereBetween('journal_date', [$selectedStartDate, $selectedEndDate])
+            ->sum('debit'); // Summing debits for assets
 
-        $liabilities = Payment::whereHas('account', function ($query) {
-            $query->where('account_type', 'liability');
-        })->whereBetween('payment_date', [$selectedStartDate, $selectedEndDate])->sum('amount');
+        $liabilities = JournalEntry::whereHas('account', function ($query) {
+            $query->where('account_type', 3); // Liabilities
+        })
+            ->whereBetween('journal_date', [$selectedStartDate, $selectedEndDate])
+            ->sum('credit'); // Summing credits for liabilities
 
-        // Equity calculation based on net income
-        $equity = $assets - $liabilities;
+        $equity = JournalEntry::whereHas('account', function ($query) {
+            $query->where('account_type', 4); // Equity
+        })
+            ->whereBetween('journal_date', [$selectedStartDate, $selectedEndDate])
+            ->sum('credit'); // Summing credits for equity
 
-        return view('report.balance-sheet.index', compact('assets', 'liabilities', 'equity', 'selectedStartDate', 'selectedEndDate'));
+        // Calculate total equity as assets - liabilities
+        $totalEquity = $assets - $liabilities;
+
+        // Pass data to the view
+        return view('report.balance-sheet.index', compact('assets', 'liabilities', 'totalEquity', 'selectedStartDate', 'selectedEndDate'));
     }
-
 }

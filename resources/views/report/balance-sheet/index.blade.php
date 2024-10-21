@@ -56,11 +56,11 @@
                             </tr>
                             <tr>
                                 <td>{{ __('Total Equity') }}</td>
-                                <td>{{ number_format($equity, 2) }}</td>
+                                <td>{{ number_format($totalEquity, 2) }}</td>
                             </tr>
                             <tr>
                                 <td><strong>{{ __('Total Liabilities and Equity') }}</strong></td>
-                                <td><strong>{{ number_format($liabilities + $equity, 2) }}</strong></td>
+                                <td><strong>{{ number_format($liabilities + $totalEquity, 2) }}</strong></td>
                             </tr>
                         </tbody>
                     </table>
