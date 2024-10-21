@@ -49,9 +49,9 @@
                         <tbody>
                             @foreach ($trialBalance as $item)
                                 <tr>
-                                    <td>{{ $item['account']->account_name }}</td>
-                                    <td>{{ number_format($item['debit'], 2) }}</td>
-                                    <td>{{ number_format($item['credit'], 2) }}</td>
+                                    <td>{{ $item->account_name }}</td>
+                                    <td>{{ number_format($item->total_debit, 2) }}</td>
+                                    <td>{{ number_format($item->total_credit, 2) }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

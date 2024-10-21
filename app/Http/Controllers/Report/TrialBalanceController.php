@@ -3,10 +3,8 @@
 namespace App\Http\Controllers\Report;
 
 use App\Http\Controllers\Controller;
-use App\Models\Master\Account;
-use App\Models\Transaction\Payment;
-use App\Models\Transaction\Receipt;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TrialBalanceController extends Controller
 {
@@ -26,26 +24,15 @@ class TrialBalanceController extends Controller
             return redirect()->route('trial-balance.index');
         }
 
-        // Get all accounts
-        $accounts = Account::all();
-        $trialBalance = [];
-
-        // Calculate balances for each account
-        foreach ($accounts as $account) {
-            $debit = Receipt::where('account_id', $account->id)
-                ->whereBetween('receipt_date', [$selectedStartDate, $selectedEndDate])
-                ->sum('amount');
-
-            $credit = Payment::where('account_id', $account->id)
-                ->whereBetween('payment_date', [$selectedStartDate, $selectedEndDate])
-                ->sum('amount');
-
-            $trialBalance[] = [
-                'account' => $account,
-                'debit' => $debit,
-                'credit' => $credit,
-            ];
-        }
+        // Get trial balance by grouping accounts
+        $trialBalance = DB::table('journal_entries')
+            ->join('accounts', 'journal_entries.account_id', '=', 'accounts.id')
+            ->select('accounts.account_name',
+                DB::raw('SUM(journal_entries.debit) as total_debit'),
+                DB::raw('SUM(journal_entries.credit) as total_credit'))
+            ->whereBetween('journal_entries.journal_date', [$selectedStartDate, $selectedEndDate])
+            ->groupBy('accounts.account_name')
+            ->get();
 
         return view('report.trial-balance.index', compact('trialBalance', 'selectedStartDate', 'selectedEndDate'));
     }
