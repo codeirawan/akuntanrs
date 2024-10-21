@@ -47,7 +47,7 @@
                     <div class="kt-login-v2__footer">
                         <div class="kt-login-v2__info">
                             {{ date('Y') }}&nbsp;&copy;&nbsp;<a href="https://www.linkedin.com/in/codeirawan"
-                                target="_blank" class="kt-link">made from scratch by codeirawan</a>
+                                target="_blank" class="kt-link">codeirawan</a>
                         </div>
                     </div>
                 </div>
