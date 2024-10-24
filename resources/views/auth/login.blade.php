@@ -47,7 +47,7 @@
 @endsection
 @section('image')
     <div class="kt-login-v2__image">
-        <img src="{{ asset('images/auth/login.svg') }}" alt="Login">
+        <img src="{{ asset('images/auth/Doctors-cuate.svg') }}" alt="Login">
     </div>
 @endsection
 
