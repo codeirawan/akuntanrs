@@ -7,7 +7,7 @@
         <div id="kt_header_mobile" class="kt-header-mobile  kt-header-mobile--fixed ">
             <div class="kt-header-mobile__logo">
                 <a href="{{ url('/') }}">
-                    <img alt="Logo" src="{{ asset('images/logo/brand.png') }}" width="104px" height="40px" />
+                    <img alt="Logo" src="{{ asset('images/logo/brand.svg') }}" width="104px" height="40px" />
                 </a>
             </div>
             <div class="kt-header-mobile__toolbar">
