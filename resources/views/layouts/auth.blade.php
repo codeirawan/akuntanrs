@@ -46,8 +46,8 @@
                 <div class="kt-grid__item">
                     <div class="kt-login-v2__footer">
                         <div class="kt-login-v2__info">
-                            {{ date('Y') }}&nbsp;&copy;&nbsp;<a href="https://www.linkedin.com/in/codeirawan"
-                                target="_blank" class="kt-link">codeirawan</a>
+                            {{ date('Y') }}&nbsp;&copy;&nbsp;<a href="https://akuntanrs.vercel.app"
+                                target="_blank" class="kt-link">jurnale</a>
                         </div>
                     </div>
                 </div>
