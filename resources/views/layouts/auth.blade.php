@@ -14,7 +14,7 @@
                     <div class="kt-login-v2__head">
                         <div class="kt-login-v2__logo">
                             <a href="{{ url('/') }}">
-                                <img src="{{ asset('images/logo/brand.svg') }}" width="206px" height="80px"
+                                <img src="{{ asset('images/logo/jurnale.png') }}" width="206px" height="80px"
                                     alt="Logo Auth" />
                             </a>
                         </div>
