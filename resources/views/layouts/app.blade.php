@@ -31,7 +31,7 @@
                     <div class=" kt-footer kt-grid__item kt-grid kt-grid--desktop kt-grid--ver-desktop">
                         <div class="kt-container  kt-container--fluid ">
                             <div class="kt-footer__copyright justify-content-end">
-                                {{ date('Y') }}&nbsp;&copy;&nbsp;<a href="https://akuntanrs.vercel.app"
+                                {{ date('Y') }}&nbsp;&copy;&nbsp;<a href="https://jurnale.vercel.app"
                                     class="kt-link">jurnale</a>
                             </div>
                         </div>
