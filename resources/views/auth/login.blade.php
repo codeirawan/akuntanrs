@@ -11,7 +11,8 @@
 @section('content')
     <div class="form-group">
         <input type="email" class="form-control @error('email') is-invalid @enderror" name="email"
-            value="{{ old('email') }}" required autocomplete="email" placeholder="{{ __('Email Address') }}">
+            value="{{ old('email') }}" required autocomplete="off" placeholder="{{ __('Email Address') }}"
+            title="Email: demo@admin.test">
 
         @error('email')
             <span class="invalid-feedback" role="alert">
@@ -22,7 +23,7 @@
 
     <div class="form-group">
         <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" required
-            placeholder="{{ __('Password') }}">
+            placeholder="{{ __('Password') }}" title="Password: Pa$$w0rd!">
 
         @error('password')
             <span class="invalid-feedback" role="alert">
